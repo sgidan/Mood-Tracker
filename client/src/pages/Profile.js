@@ -27,7 +27,7 @@ class Profile extends Component {
       return (
         <Container fluid>
           <Row>
-            <Col size="md-12">
+            <Col size="md-10">
               <Jumbotron>
                 <h1>Mood Tracker</h1>
               </Jumbotron>
