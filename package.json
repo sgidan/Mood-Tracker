@@ -28,5 +28,7 @@
   },
   "dependencies": {
     "dotenv": "^8.0.0"
+    "boostrap": "^2.0.0"
+
   }
 }
