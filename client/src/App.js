@@ -1,14 +1,13 @@
 import React, { Component } from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import Profile from "./pages/Profile";
-import Nav from "./components/Nav";
+import TopBar from "./components/TopBar/index";
 
 class App extends Component {
   render() {
     return (
       <div>
-        <Nav />
+        <TopBar />
         <Profile />
       </div>
     );
