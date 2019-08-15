@@ -41,7 +41,23 @@ class Profile extends Component {
         
             </Col>
           </Row>
-         
+          <Row>
+          <form className="journalForm">
+                <p>I am grateful for...</p>
+                  <Input name="q1" placeholder="1." />
+                  <Input name="title" placeholder="2." />
+                  <Input name="title" placeholder="3." />
+                <p>What would make today great?</p>
+                  <Input name="author" placeholder="1" />
+                  <Input name="title" placeholder="2" />
+                  <Input name="title" placeholder="3" />
+                <p>Daily affirmations:</p>
+                  <Input name="title" placeholder="I am.." />
+                <p>Brain Dump</p>
+                  <TextArea name="synopsis" placeholder="Other notes, ramblings you need to release (Optional)" />
+                <FormBtn>Submit Journal</FormBtn>
+              </form>
+          </Row>
         </Container>
       );
     }
