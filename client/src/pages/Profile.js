@@ -27,6 +27,7 @@ class Profile extends Component {
       return (
         <Container fluid>
           <Row>
+            
             <Col size="md">
               <Jumbotron>
                 <h1>scraped School of life video goes here</h1>
