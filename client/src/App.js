@@ -8,13 +8,15 @@ import TopBar from "./components/TopBar/index";
 class App extends Component {
   render() {
     return (
-      <div>
-        <TopBar />
-        <Switch> 
-          <Route exact path="/" component={Welcome} />
-          <Route exact path="/profile" component={Profile}/>
-        </Switch>
-      </div>
+      <Router>
+        <div>
+          <TopBar />
+          <Switch> 
+            <Route exact path="/" component={Welcome} />
+            <Route exact path="/profile" component={Profile}/>
+          </Switch>
+        </div>
+      </Router>
     );
   }
 }

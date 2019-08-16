@@ -1,36 +1,26 @@
 {
-  "name": "Mood-Tracker",
+  "name": "mern",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Mern Demo",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "kill": "kill-port 3000 3001 9229",
-    "start": "node server/server",
-    "dev": "npm run kill && concurrently \"cd server && nodemon server\" \"cd client && npm start\"",
-    "install-all": "npm i && cd client && npm i"
+    "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
+    "start:prod": "node server.js",
+    "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
+    "client": "cd client && npm run start",
+    "seed": "node scripts/seedDB.js",
+    "install": "cd client && npm install",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "npm run build"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/sgidan/Mood-Tracker.git"
-  },
-  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/sgidan/Mood-Tracker/issues"
-  },
-  "homepage": "https://github.com/sgidan/Mood-Tracker#readme",
   "devDependencies": {
-    "concurrently": "^4.1.1",
-    "kill-port": "^1.5.1",
-    "nodemon": "^1.19.1"
+    "concurrently": "^4.1.0",
+    "nodemon": "^1.18.7"
   },
   "dependencies": {
-    "axios": "^0.19.0",
-    "dotenv": "^8.0.0",
-    "express": "^4.17.1",
-    "mongoose": "^5.6.9",
-    "path": "^0.12.7"
+    "express": "^4.16.3",
+    "if-env": "^1.0.4"
   }
 }
