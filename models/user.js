@@ -7,6 +7,6 @@ const userSchema = new Schema({
   password: String
 });
 
-const Journal = mongoose.model("Journal", journalSchema);
+const User = mongoose.model("User", userSchema);
 
-module.exports = Journal;
+module.exports = User;
