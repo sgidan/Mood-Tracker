@@ -13,7 +13,7 @@ class Welcome extends Component {
     render() {
       return (
         <Container fluid>
-            <LoginCard />
+           
             
         </Container>
       );
