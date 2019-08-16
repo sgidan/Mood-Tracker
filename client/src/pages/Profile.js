@@ -29,14 +29,14 @@ class Profile extends Component {
           <Row>
             <Col size="md">
               <Jumbotron>
-                <h1>Mood Tracker</h1>
+                <h1>scraped School of life video goes here</h1>
               </Jumbotron>
               
             </Col>
             
            <Col size="md-6 sm-12">
               <Jumbotron>
-                <h1>Books On My List</h1>
+                <h1>react graph for moods go here </h1>
               </Jumbotron>
         
             </Col>
