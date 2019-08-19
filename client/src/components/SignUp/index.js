@@ -1,6 +1,7 @@
 import "./style.css";
 import API from "../../utils/API";
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
 
 export default class SignUp extends Component {
   state = {
@@ -16,15 +17,11 @@ export default class SignUp extends Component {
   };
 
   handleSubmit = event => {
-    const { name, email, password, foo } = this.state;
+    const { name, email, password, signedup } = this.state;
     event.preventDefault();
     this.setState({ name, email, password });
     API.signupUser({ name, email, password })
       .then(response => {
-          this.setState(signedup = true);
-        //  req.params = response.id
-        // API.getUserProfile({id})
-        // res.send(response)
       })
       .catch(error => {
         if (error) {
@@ -33,13 +30,28 @@ export default class SignUp extends Component {
         }
       });
   };
-
-  render() {
-    if(foo) {
-        return <Redirect to="/profile"></Redirect>
+  
+    setRedirect = () => {
+        console.log("in set Redirect")
+        this.setState({
+            signedup: true
+        })
     }
 
+// renderRedirect = () => {
+//   if(this.state.signedup) {
+//       return <Redirect to='/profile' />
+//   }
+// }
+
+
+render() {
     return (
+        this.state.signedup ? (<Redirect to='/profile' /> ): (
+
+        
+    
+
       <div className="signup-box">
         <div className="card">
           <img
@@ -100,6 +112,7 @@ export default class SignUp extends Component {
                 href="/profile"
                 class="card-link"
                 id="createID"
+                onClick={this.setRedirect}
               >
                 Sign Up
               </button>
@@ -107,6 +120,10 @@ export default class SignUp extends Component {
           </form>
         </div>
       </div>
-    );
-  }
+        )
+        
+    )
+  
+    
+}
 }
