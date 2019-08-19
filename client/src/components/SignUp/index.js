@@ -1,7 +1,7 @@
 import "./style.css";
 import API from "../../utils/API";
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 export default class SignUp extends Component {
   state = {
@@ -19,39 +19,40 @@ export default class SignUp extends Component {
   handleSubmit = event => {
     const { name, email, password, signedup } = this.state;
     event.preventDefault();
+    localStorage.clear();
+    let user = { name };
+    console.log("userrrr", user);
+    localStorage.setItem("user", JSON.stringify(user));
+
     this.setState({ name, email, password });
     API.signupUser({ name, email, password })
-      .then(response => {
-      })
+      .then(response => {})
       .catch(error => {
         if (error) {
           console.log(error);
           this.setState({ error });
         }
       });
+      this.props.history.push("/profile")
   };
-  
-    setRedirect = () => {
-        console.log("in set Redirect")
-        this.setState({
-            signedup: true
-        })
-    }
 
-// renderRedirect = () => {
-//   if(this.state.signedup) {
-//       return <Redirect to='/profile' />
-//   }
-// }
+  setRedirect = () => {
+    console.log("in set Redirect");
+    this.setState({
+      signedup: true
+    });
+  };
 
+  // renderRedirect = () => {
+  //   if(this.state.signedup) {
+  //       return <Redirect to='/profile' />
+  //   }
+  // }
 
-render() {
-    return (
-        this.state.signedup ? (<Redirect to='/profile' /> ): (
-
-        
-    
-
+  render() {
+    return this.state.signedup ? (
+      <Redirect to="/profile" />
+    ) : (
       <div className="signup-box">
         <div className="card">
           <img
@@ -112,7 +113,7 @@ render() {
                 href="/profile"
                 class="card-link"
                 id="createID"
-                onClick={this.setRedirect}
+                // onClick={this.setRedirect}
               >
                 Sign Up
               </button>
@@ -120,10 +121,6 @@ render() {
           </form>
         </div>
       </div>
-        )
-        
-    )
-  
-    
-}
+    );
+  }
 }
