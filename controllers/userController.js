@@ -6,8 +6,12 @@ module.exports = {
   signupUser: function(req, res) {
     console.log('Inside userController', req.body);
     db.User.create(req.body)
-      .then(res => res.json(res))
+      .then(response => res.json(response))
       .catch(err => res.status(422).json(err));
+  },
+
+  getUserProfile: function(req, res){
+    console.log('Inside getUserProfile > getUserProfile');
   },
 
   loginUser: function(req, res) {

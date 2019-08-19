@@ -7,7 +7,8 @@ export default class SignUp extends Component {
     name: "",
     email: "",
     password: "",
-    error: null
+    error: null,
+    signedup: false
   };
 
   handleOnChange = event => {
@@ -15,17 +16,31 @@ export default class SignUp extends Component {
   };
 
   handleSubmit = event => {
-    const { name, email, password } = this.state;
+    const { name, email, password, foo } = this.state;
     event.preventDefault();
-    this.setstate({ name, email, password });
+    this.setState({ name, email, password });
     API.signupUser({ name, email, password })
-    console.log("after API.signupUser", this.state);
-    
+      .then(response => {
+          this.setState(signedup = true);
+        //  req.params = response.id
+        // API.getUserProfile({id})
+        // res.send(response)
+      })
+      .catch(error => {
+        if (error) {
+          console.log(error);
+          this.setState({ error });
+        }
+      });
   };
 
   render() {
+    if(foo) {
+        return <Redirect to="/profile"></Redirect>
+    }
+
     return (
-      <div class="signup-box">
+      <div className="signup-box">
         <div className="card">
           <img
             src="https://cdn11.bigcommerce.com/s-x2qveuc8fg/images/stencil/1280x1280/products/197/470/USER-LONGIN-HISTORY__78836.1528243966.png?c=2"
@@ -35,8 +50,8 @@ export default class SignUp extends Component {
           <div className="card-body">
             <h4 className="card-title">Sign Up:</h4>
           </div>
-          <ul className="list-group list-group-flush">
-            <form action="" onSubmit={this.handleSubmit}>
+          <form action="" onSubmit={this.handleSubmit}>
+            <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <div className="form-group">
                   <label for="name">Name: </label>
@@ -78,18 +93,18 @@ export default class SignUp extends Component {
                   />
                 </div>
               </li>
-            </form>
-          </ul>
-          <div className="card-body">
-            <button
-              type="submit"
-              href="/profile"
-              class="card-link"
-              id="createID"
-            >
-              Sign Up
-            </button>
-          </div>
+            </ul>
+            <div className="card-body">
+              <button
+                type="submit"
+                href="/profile"
+                class="card-link"
+                id="createID"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     );
