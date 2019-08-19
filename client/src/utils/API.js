@@ -21,7 +21,12 @@ export default {
 
     signupUser: function(newUser) {
         console.log('Inside API signupUser:', newUser);
-        return axios.post('/api/users/signup', newUser)
+        return axios.post('/api/users/signup', newUser);
+
+    },
+
+    getUserProfile: function(userProfile){
+        return axios.get('/api/users/:id', userProfile);
     }
 }
 
