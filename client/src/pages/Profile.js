@@ -15,31 +15,33 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    moods: [],
+    moods: []
   };
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
     console.log("user is here", user);
-    this.setState({ userId: user.id, name:user.name });
-    console.log("USERID", this.state.userId);
+    this.setState({ userId: user.id, name: user.name }, function() {
+      console.log("USERID", this.state.userId);
 
-    // axios.get("/api/users/profile/:id")
-    // TODO: Will need to update 'name' to specific id or something more secure/poignant
-    API.getUserProfile(user.id)
-    .then(res => {
-      console.log("get user profile response", res)
-      this.setState({ 
-      //  name: res.data.name,
-       journals: res.data.journals,
-       moods: res.data.moods
-      })
-      console.log('STATE', this.state)
-    }).catch(err => {
-        if (err) {
-          this.setState({ error: err.message });
-        }
-      });
+      // axios.get("/api/users/profile/:id")
+      // TODO: Will need to update 'name' to specific id or something more secure/poignant
+      API.getUserProfile(user.id)
+        .then(res => {
+          console.log("get user profile response", res);
+          this.setState({
+            //  name: res.data.name,
+            journals: res.data.journals,
+            moods: res.data.moods
+          });
+          console.log("STATE", this.state);
+        })
+        .catch(err => {
+          if (err) {
+            this.setState({ error: err.message });
+          }
+        });
+    });
   }
 
   render() {

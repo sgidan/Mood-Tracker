@@ -3,6 +3,12 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
+let item = localStorage.getItem("user");
+let user = null;
+if (item) {
+  user = JSON.parse(item);
+}
+
 function TopBar(props) {
   return (
     // <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -24,7 +30,7 @@ function TopBar(props) {
               Login
             </Nav.Link>
             <Nav.Link id="nav-option" href="#pricing">
-              {props.user}'s Mood Profile
+              {props.user ? props.user.name + "'s Mood Tracker" : " "}
             </Nav.Link>
             {/* <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
             <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>

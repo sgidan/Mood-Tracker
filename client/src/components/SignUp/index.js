@@ -18,6 +18,7 @@ export default class SignUp extends Component {
 
   handleSubmit = event => {
     const { name, email, password, signedup } = this.state;
+    const self = this;
     event.preventDefault();
 
     this.setState({ name, email, password });
@@ -26,12 +27,16 @@ export default class SignUp extends Component {
         console.log("signup user response", response.data);
         const { _id, name } = response.data;
         const user = { id: _id, name };
+        console.log("this.props", self.props);
+        console.log("this.props.history", self.props.history);
+
         // console.log(_id)
         // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
         localStorage.clear();
         // let user = { name };
-
+        self.props.setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
+        self.props.history.push("/profile");
       })
       .catch(error => {
         if (error) {
@@ -39,9 +44,6 @@ export default class SignUp extends Component {
           this.setState({ error });
         }
       });
-    console.log("this.props", this.props);
-    console.log("this.props.history", this.props.history);
-    this.props.history.push("/profile");
   };
 
   setRedirect = () => {

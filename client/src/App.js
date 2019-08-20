@@ -10,26 +10,31 @@ import Axios from "axios";
 
 class App extends Component {
   state = {
-    user: "",
-    error: ""
+    user: null
   };
 
-  // componentDidMount() {
-  //   let user = JSON.parse(localStorage.getItem("user"));
-  //   console.log("user is here", user);
-  //   this.setState({ user: user.name });
-  //   console.log("USERID", this.state.user);
-  // }
+  setUser = user => {
+    this.setState({ user: user });
+  };
+  componentDidMount() {
+    localStorage.clear();
+  }
+
   render() {
     return (
       <Router>
         <div>
+          {/* {this.state.isLoggedIn? (<TopBar/>) : <TopBarTwo/>} */}
           <TopBar user={this.state.user} />
           <Switch>
             <Route exact path="/" component={Welcome} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/login" component={LoginCard} />
-            <Route exact path="/signup" component={SignUp} />
+            <Route
+              exact
+              path="/signup"
+              render={(routeProps) => <SignUp {...routeProps} setUser={this.setUser} />}
+            />
           </Switch>
         </div>
       </Router>
