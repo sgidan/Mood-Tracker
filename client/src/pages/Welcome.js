@@ -1,8 +1,7 @@
 import React, { Component } from "react";
 import { Container } from "../components/Grid";
 // import LoginCard from '../components/LoginCard'
-require("dotenv").config();
-
+import "../index.css";
 //access by process.env.API_key
 
 class Welcome extends Component {
@@ -13,7 +12,12 @@ class Welcome extends Component {
     render() {
       return (
         <Container fluid>
-           
+           <ul className="slideshow">
+          <li />
+          <li />
+          <li />
+          <li />
+        </ul>
             
         </Container>
       );

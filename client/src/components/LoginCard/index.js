@@ -1,6 +1,7 @@
-import "./style.css";
+// import styles from "../SignUp/style.js/index.js";
 import API from "../../utils/API";
 import React, { Component } from "react";
+// console.log(styles);
 
 export default class LoginCard extends Component {
   state = {

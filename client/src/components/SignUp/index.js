@@ -1,4 +1,4 @@
-import "./style.css";
+// import "./style.css";
 import API from "../../utils/API";
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
