@@ -3,9 +3,17 @@ const Schema = mongoose.Schema;
 ///do we want this to be required??***********
 
 const userSchema = new Schema({
-  username: String,
+  name: String,
   email: String,
-  password: String
+  password: String,
+  journals: [{
+   type: Schema.Types.ObjectId, 
+   ref: 'Journal'
+  }],
+  moods:[{
+    type: Schema.Types.ObjectId, 
+    ref: 'Mood'
+  }]
 });
 
 const User = mongoose.model("User", userSchema);

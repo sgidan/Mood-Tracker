@@ -1,7 +1,7 @@
 import "./style.css";
 import API from "../../utils/API";
 import React, { Component } from "react";
-import { Redirect } from 'react-router-dom';
+import { Redirect } from "react-router-dom";
 
 export default class SignUp extends Component {
   state = {
@@ -19,9 +19,20 @@ export default class SignUp extends Component {
   handleSubmit = event => {
     const { name, email, password, signedup } = this.state;
     event.preventDefault();
+    
     this.setState({ name, email, password });
     API.signupUser({ name, email, password })
       .then(response => {
+        console.log('signup user response', response.data);
+        const {_id} = response.data;
+        console.log(_id)
+        // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
+        localStorage.clear();
+        // let user = { name };
+
+        // console.log("userrrr", user);
+        localStorage.setItem("userId", JSON.stringify(_id));
+    
       })
       .catch(error => {
         if (error) {
@@ -29,29 +40,28 @@ export default class SignUp extends Component {
           this.setState({ error });
         }
       });
+      console.log('this.props', this.props);
+      console.log('this.props.history', this.props.history);
+      this.props.history.push("/profile");
   };
-  
-    setRedirect = () => {
-        console.log("in set Redirect")
-        this.setState({
-            signedup: true
-        })
-    }
 
-// renderRedirect = () => {
-//   if(this.state.signedup) {
-//       return <Redirect to='/profile' />
-//   }
-// }
+  setRedirect = () => {
+    console.log("in set Redirect");
+    this.setState({
+      signedup: true
+    });
+  };
 
+  // renderRedirect = () => {
+  //   if(this.state.signedup) {
+  //       return <Redirect to='/profile' />
+  //   }
+  // }
 
-render() {
-    return (
-        this.state.signedup ? (<Redirect to='/profile' /> ): (
-
-        
-    
-
+  render() {
+    return this.state.signedup ? (
+      <Redirect to="/profile" />
+    ) : (
       <div className="signup-box">
         <div className="card">
           <img
@@ -112,7 +122,7 @@ render() {
                 href="/profile"
                 class="card-link"
                 id="createID"
-                onClick={this.setRedirect}
+                // onClick={this.setRedirect}
               >
                 Sign Up
               </button>
@@ -120,10 +130,6 @@ render() {
           </form>
         </div>
       </div>
-        )
-        
-    )
-  
-    
-}
+    );
+  }
 }
