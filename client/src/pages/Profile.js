@@ -48,19 +48,27 @@ class Profile extends Component {
     return (
       <Container fluid>
         <Row>
+          <Col size="lg">
+            <Jumbotron>
+              <h1>Mood Quiz</h1>
+            </Jumbotron>
+          </Col>
+          </Row>
+        <Row>
           <Col size="md">
             <Jumbotron>
-              <h1>{this.state.name}</h1>
+              <h1>Scraped youtube videos</h1>
             </Jumbotron>
           </Col>
 
           <Col size="md-6 sm-12">
             <Jumbotron>
-              <h1>react graph for moods go here </h1>
+              <h1>react-trend graph for moods</h1>
             </Jumbotron>
           </Col>
         </Row>
         <Row>
+          <h1>{this.state.name}'s Daily Journal Enteries</h1>
           <form className="journalForm">
             <p>I am grateful for...</p>
             <Input name="q1" placeholder="1." />
