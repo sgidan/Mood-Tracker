@@ -6,7 +6,7 @@ const { signupUser, getUserProfile } = require('../../controllers/userController
 router.route('/signup')
     .post(signupUser)
 
-router.route('/profile/: id')
+router.route('/profile/:id')
     .get(getUserProfile)
 
 

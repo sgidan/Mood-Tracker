@@ -19,21 +19,30 @@ export default class SignUp extends Component {
   handleSubmit = event => {
     const { name, email, password, signedup } = this.state;
     event.preventDefault();
-    localStorage.clear();
-    let user = { name };
-    console.log("userrrr", user);
-    localStorage.setItem("user", JSON.stringify(user));
-
+    
     this.setState({ name, email, password });
     API.signupUser({ name, email, password })
-      .then(response => {})
+      .then(response => {
+        console.log('signup user response', response.data);
+        const {_id} = response.data;
+        console.log(_id)
+        // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
+        localStorage.clear();
+        // let user = { name };
+
+        // console.log("userrrr", user);
+        localStorage.setItem("userId", JSON.stringify(_id));
+    
+      })
       .catch(error => {
         if (error) {
           console.log(error);
           this.setState({ error });
         }
       });
-      this.props.history.push("/profile")
+      console.log('this.props', this.props);
+      console.log('this.props.history', this.props.history);
+      this.props.history.push("/profile");
   };
 
   setRedirect = () => {

@@ -12,6 +12,10 @@ module.exports = {
 
   getUserProfile: function(req, res){
     console.log('Inside getUserProfile > getUserProfile');
+      db.User.findById(req.params.id)
+        .then(dbUser => res.json(dbUser))
+        .catch(err => res.status(422).json(err));
+
   },
 
   loginUser: function(req, res) {

@@ -25,8 +25,9 @@ export default {
 
     },
 
-    getUserProfile: function(userProfile){
-        return axios.get('/api/users/:id', userProfile);
+    getUserProfile: function(userId){
+        console.log('innside getUserProfile function', userId);
+        return axios.get('/api/users/profile/' + userId);
     }
 }
 

@@ -13,24 +13,35 @@ class Profile extends Component {
   state = {
     name: "",
     error: "",
-    user: ""
+    userId: "",
+    journals: [],
+    moods: [],
   };
 
   componentDidMount() {
-    let user = localStorage.getItem("user");
-    console.log("user is here", JSON.parse(user));
-    this.setState({ name: user.name });
-    console.log("NAME", this.state.name);
+    let userId = JSON.parse(localStorage.getItem("userId"));
+    console.log("user is here", userId);
+    this.setState({ userId: userId });
+    console.log("USERID", this.state.userId);
 
-    axios.get("/api/users/profile/:id").then(res => {
-      console.log("whaat is res", res)
-      this.setState({ user: res.data.user }).catch(err => {
+    // axios.get("/api/users/profile/:id")
+    // TODO: Will need to update 'name' to specific id or something more secure/poignant
+    API.getUserProfile(userId)
+    .then(res => {
+      console.log("get user profile response", res)
+      this.setState({ 
+       name: res.data.name,
+       journals: res.data.journals,
+       moods: res.data.moods
+      })
+      console.log('STATE', this.state)
+    }).catch(err => {
         if (err) {
           this.setState({ error: err.message });
         }
       });
-    });
   }
+
   render() {
     return (
       <Container fluid>
