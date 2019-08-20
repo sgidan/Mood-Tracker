@@ -16,9 +16,9 @@ class App extends Component {
   setUser = user => {
     this.setState({ user: user });
   };
-  componentDidMount() {
-    localStorage.clear();
-  }
+  // componentDidMount() {
+  //   localStorage.clear();
+  // }
 
   render() {
     return (

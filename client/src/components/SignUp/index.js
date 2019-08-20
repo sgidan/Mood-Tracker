@@ -32,7 +32,7 @@ export default class SignUp extends Component {
 
         // console.log(_id)
         // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
-        localStorage.clear();
+        // localStorage.clear();
         // let user = { name };
         self.props.setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
