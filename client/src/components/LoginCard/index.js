@@ -16,17 +16,22 @@ export default class LoginCard extends Component {
 
   handleSubmit = event => {
     const { email, password } = this.state;
+    const self = this;
+
     event.preventDefault();
     // this.setState({ email, password });
     API.loginUser({ email, password })
     .then(response => {
         console.log('login user response', response.data);
-        const {_id} = response.data;
-        console.log("login user id", _id)
+        const {_id, name, moods, journals} = response.data;
+        let user = {id:_id, name};
+        console.log("login user id", user)
         // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
-        localStorage.clear();
-        localStorage.setItem("userId", JSON.stringify(_id));
-    
+        // localStorage.clear();
+        localStorage.setItem("user", JSON.stringify(user));
+        self.props.setUser(user);
+
+        this.props.history.push("/profile");
       })
       .catch(error => {
         if (error) {
@@ -36,7 +41,6 @@ export default class LoginCard extends Component {
       });
       console.log('this.props', this.props);
       console.log('this.props.history', this.props.history);
-      this.props.history.push("/profile");
   };
 
   render() {

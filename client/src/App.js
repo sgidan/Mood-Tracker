@@ -29,7 +29,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Welcome} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/login" component={LoginCard} />
+            <Route exact path="/login" render={(routeProps) => <LoginCard {...routeProps} setUser={this.setUser} />} />
             <Route
               exact
               path="/signup"
