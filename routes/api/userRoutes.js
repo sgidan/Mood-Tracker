@@ -1,6 +1,6 @@
 // LAST STOP BEFORE DIVING INTO THE BACKEND
 const router = require("express").Router();
-const { signupUser, getUserProfile } = require('../../controllers/userController');
+const { signupUser, getUserProfile, loginUser } = require('../../controllers/userController');
 
 // Matches '/api/users'
 router.route('/signup')
@@ -10,8 +10,8 @@ router.route('/profile/:id')
     .get(getUserProfile)
 
 
-// router.route('/login')
-//     .post(loginUser) 
+router.route('/login')
+    .post(loginUser) 
 
 // router.route('/logout')
 //     .delete(logoutUser)
