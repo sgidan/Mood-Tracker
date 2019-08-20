@@ -39,7 +39,8 @@ export default class LoginCard extends Component {
                 <div className="form-group">
                   <label for="email">Email: </label>
                   <input
-                    type="text"
+                    type="email"
+                    required= 'true'
                     className="form-control"
                     id="email"
                     name="email"
@@ -52,10 +53,13 @@ export default class LoginCard extends Component {
               
               <li className="list-group-item">
                 <div className="form-group">
-                  <label for="exampleInputPassword1">Password:</label>
+                  <label for="pass">Password:(min 6 characters)</label>
                   <input
-                    type="text"
+                    type="password"
                     className="form-control"
+                    name="password"
+                    minlength="6" 
+                    required="true"
                     id="password"
                     value={this.state.password}
                     onChange={this.handleOnChange}

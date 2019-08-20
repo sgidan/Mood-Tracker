@@ -19,20 +19,19 @@ export default class SignUp extends Component {
   handleSubmit = event => {
     const { name, email, password, signedup } = this.state;
     event.preventDefault();
-    
+
     this.setState({ name, email, password });
     API.signupUser({ name, email, password })
       .then(response => {
-        console.log('signup user response', response.data);
-        const {_id} = response.data;
-        console.log(_id)
+        console.log("signup user response", response.data);
+        const { _id, name } = response.data;
+        const user = { id: _id, name };
+        // console.log(_id)
         // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
         localStorage.clear();
         // let user = { name };
 
-        // console.log("userrrr", user);
-        localStorage.setItem("userId", JSON.stringify(_id));
-    
+        localStorage.setItem("user", JSON.stringify(user));
       })
       .catch(error => {
         if (error) {
@@ -40,9 +39,9 @@ export default class SignUp extends Component {
           this.setState({ error });
         }
       });
-      console.log('this.props', this.props);
-      console.log('this.props.history', this.props.history);
-      this.props.history.push("/profile");
+    console.log("this.props", this.props);
+    console.log("this.props.history", this.props.history);
+    this.props.history.push("/profile");
   };
 
   setRedirect = () => {
@@ -92,7 +91,8 @@ export default class SignUp extends Component {
                 <div className="form-group">
                   <label for="email">Email: </label>
                   <input
-                    type="text"
+                    type="email"
+                    required="true"
                     className="form-control"
                     id="email"
                     name="email"
@@ -104,10 +104,13 @@ export default class SignUp extends Component {
               </li>
               <li className="list-group-item">
                 <div className="form-group">
-                  <label for="exampleInputPassword1">Password:</label>
+                  <label for="pass">Password:(min 6 characters)</label>
                   <input
                     type="password"
                     className="form-control"
+                    name="password"
+                    minlength="6"
+                    required="true"
                     id="password"
                     value={this.state.password}
                     onChange={this.handleOnChange}

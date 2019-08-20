@@ -19,18 +19,18 @@ class Profile extends Component {
   };
 
   componentDidMount() {
-    let userId = JSON.parse(localStorage.getItem("userId"));
-    console.log("user is here", userId);
-    this.setState({ userId: userId });
+    let user = JSON.parse(localStorage.getItem("user"));
+    console.log("user is here", user);
+    this.setState({ userId: user.id, name:user.name });
     console.log("USERID", this.state.userId);
 
     // axios.get("/api/users/profile/:id")
     // TODO: Will need to update 'name' to specific id or something more secure/poignant
-    API.getUserProfile(userId)
+    API.getUserProfile(user.id)
     .then(res => {
       console.log("get user profile response", res)
       this.setState({ 
-       name: res.data.name,
+      //  name: res.data.name,
        journals: res.data.journals,
        moods: res.data.moods
       })
