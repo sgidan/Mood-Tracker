@@ -19,7 +19,21 @@ module.exports = {
   },
 
   loginUser: function(req, res) {
-    console.log('Inside userController > loginUser');
+    console.log('Inside userController > loginUser', req.body);
+    const { email, password } = req.body;
+    db.User.findOne({email})
+      .then(dbUser => {
+        console.log(dbUser);
+        if (dbUser) {
+          console.log("this works")
+          if (dbUser.password === password){
+            res.json(dbUser)
+          }
+          else {
+            res.send('Incorrect Password')
+          }
+        }
+      })
   },
 
   logoutUser: function(req, res) {
