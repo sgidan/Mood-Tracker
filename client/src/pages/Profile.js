@@ -17,7 +17,15 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    moods: []
+    moods: ''
+  };
+
+  handleInputChange = event => {
+    const { label, value } = event.target;
+    console.log("event.target", event.target.value)
+    // this.setState({
+      // [name]: value
+    // });
   };
 
   componentDidMount() {
@@ -47,28 +55,30 @@ class Profile extends Component {
   }
 
   render() {
+    let q = 0;
     return (
       <Container fluid>
         <Row>
           <Col size="lg">
-              <h1>Mood Quiz</h1>
-              <Form>
-                {['checkbox'].map((type, i) => (
-                  <div key={`inline-${type}`} className="mb-3">
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
-                  </div>
-                ))}
-              </Form>
+            <h1>Mood Quiz</h1>
+            <Form>
+              {["checkbox"].map(type => (
+                <div key={`inline-${type}`} className="mb-3">
+                  <Form.Check
+                    inline
+                    label="1"
+                    value="1"
+                    type={type}
+                    id={`inline-${type}-1`}
+                    onChange= {this.handleInputChange}
+                  />
+                 
+                </div>
+              ))}
+            </Form>
+            <FormBtn variant="danger" name="submit-mood">
+              Submit
+            </FormBtn>
           </Col>
         </Row>
         <Row>
