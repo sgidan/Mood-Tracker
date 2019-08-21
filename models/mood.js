@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 ///do we want this to be required??***********
 const moodSchema = new Schema({
     date: { type: Date, default: Date.now },
-    score:[Number]
+    score:[]
     
 });
 

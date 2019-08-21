@@ -1,16 +1,17 @@
+// THE PLACE WHERE GO BETWEEN FRONTEND --> BACKEND AND VISE VERSA
 // DEPENDENCIES
 const path = require("path");
 const router = require("express").Router();
 
 // REQUIRE ROUTES
 const userRoutes = require("./api/userRoutes");
-// const moodRoutes = require("/moodRoutes");
+const moodRoutes = require("./api/moodRoutes");
 // const journalRoutes = require("/journalRoutes");
 // const apiRoutes = require("/apiRoutes");
 
 // USE ROUTES - Inform router to user these routes
 router.use("/api/users", userRoutes);
-// router.use('/api/moods', moodRoutes);
+router.use('/api/moods', moodRoutes);
 // router.use('/api/journal', journalRoutes);
 // router.use('/api/apiRoutes', apiRoutes);
 
