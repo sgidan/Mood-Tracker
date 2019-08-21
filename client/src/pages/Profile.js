@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
+import Form from "react-bootstrap/Form";
 import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
@@ -50,9 +51,24 @@ class Profile extends Component {
       <Container fluid>
         <Row>
           <Col size="lg">
-            <Jumbotron>
               <h1>Mood Quiz</h1>
-            </Jumbotron>
+              <Form>
+                {['checkbox'].map((type, i) => (
+                  <div key={`inline-${type}`} className="mb-3">
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                    <Form.Check inline label={i++} type={type} id={`inline-${type}-1`} />
+                  </div>
+                ))}
+              </Form>
           </Col>
         </Row>
         <Row>
