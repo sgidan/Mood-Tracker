@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
 import Form from "react-bootstrap/Form";
+import * as Survey from "survey-react";
+import "survey-react/survey.css";
 import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
 // import { List, ListItem } from "../components/List";
@@ -17,8 +19,22 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    moods: ''
+    moods: '',
+    json: {
+      questions: [
+        {type: "radiogroup", name: "q1", title: "How are you feeling overall today?", isRequired:true, colCount:5, choices: [1,2,3,4,5]}
+      ]
+    }
   };
+
+  
+  //Define a callback methods on survey complete
+ onComplete(survey, options) {
+  //Write survey results into database
+  console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
+  //API.post
+ }
+ 
 
   handleInputChange = event => {
     const { label, value } = event.target;
@@ -55,30 +71,13 @@ class Profile extends Component {
   }
 
   render() {
-    let q = 0;
-    return (
+    var model = new Survey.Model(this.state.json);
+   return (
       <Container fluid>
         <Row>
           <Col size="lg">
             <h1>Mood Quiz</h1>
-            <Form>
-              {["checkbox"].map(type => (
-                <div key={`inline-${type}`} className="mb-3">
-                  <Form.Check
-                    inline
-                    label="1"
-                    value="1"
-                    type={type}
-                    id={`inline-${type}-1`}
-                    onChange= {this.handleInputChange}
-                  />
-                 
-                </div>
-              ))}
-            </Form>
-            <FormBtn variant="danger" name="submit-mood">
-              Submit
-            </FormBtn>
+         <Survey.Survey model={model} onComplete={this.onComplete}/>
           </Col>
         </Row>
         <Row>
