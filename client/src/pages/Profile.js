@@ -19,7 +19,7 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    moods: '',
+    moods: [],
     json: {
       questions: [
         {type: "radiogroup", name: "q1", title: "How are you feeling overall today?", isRequired:true, colCount:5, choices: [1,2,3,4,5]}
@@ -29,7 +29,8 @@ class Profile extends Component {
 
   
   //Define a callback methods on survey complete
-  onComplete(survey, options) {
+  onComplete = (survey, options) => {
+    let self = this;
     //Write survey results into database
     console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
     //pull ID from local storage.
@@ -40,10 +41,16 @@ class Profile extends Component {
     const {id} = user
     API.submitSurvey({data, id}) 
       .then(response => {
-          console.log('API submitSurvey response', response);
-          // this.setState({
-          //   moods: response.data.score[0]
-          // });
+          let {_id} = response.data
+          let surveyAns = response.data.score[0].data.q1;
+          self.state.moods.push(surveyAns);
+          self.setState({
+             userId: _id,
+             moods: self.state.moods
+           }, function() {
+             console.log('moods', self.state.moods);
+           });
+
       });
   };
  
