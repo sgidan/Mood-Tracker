@@ -4,7 +4,6 @@ const { submitSurvey } = require('../../controllers/moodsController');
 
 // Matches '/api/moods +'
 router.route('/survey')
-    console.log("inside moodRoutes")
     .post(submitSurvey)
 
 
