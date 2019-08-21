@@ -3,7 +3,7 @@ const db = require('../models');
 module.exports = {
 
   submitSurvey: function(req, res) {
-    console.log('\n Inside moodController ------', req.body);
+    console.log('\n Inside moodController ------', req);
     db.Mood.create({score: req.body})
         console.log("inside moods controller req.params.id", req.params)
         // db.User.findById(req.params.id) 

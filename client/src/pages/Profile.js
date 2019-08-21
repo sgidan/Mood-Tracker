@@ -40,7 +40,7 @@ class Profile extends Component {
     const {id} = user
     API.submitSurvey({data, id}) 
       .then(response => {
-          console.log('submitSurvey response', response.data.score[0]);
+          console.log('API submitSurvey response', response);
           // this.setState({
           //   moods: response.data.score[0]
           // });
