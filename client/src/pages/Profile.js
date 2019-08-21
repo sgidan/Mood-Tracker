@@ -29,11 +29,23 @@ class Profile extends Component {
 
   
   //Define a callback methods on survey complete
- onComplete(survey, options) {
-  //Write survey results into database
-  console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
-  //API.post
- }
+  onComplete(survey, options) {
+    //Write survey results into database
+    console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
+    //pull ID from local storage.
+    const user = JSON.parse(localStorage.getItem("user"));
+    console.log("LocalStorage results: ", user.id);
+    //is this supposed to be this.state.json??? or survey.data from above?
+    const {data} = survey
+    const {id} = user
+    API.submitSurvey({data, id}) 
+      .then(response => {
+          console.log('API submitSurvey response', response);
+          // this.setState({
+          //   moods: response.data.score[0]
+          // });
+      });
+  };
  
 
   handleInputChange = event => {
