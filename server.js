@@ -23,8 +23,6 @@ if (process.env.NODE_ENV === "production") {
 
 // USE ROUTES
 app.use(routes);
-// app.use('/api/mood/', moodRoutes);
-// app.use('/api/journal/', journalRoutes);
 
 
 app.get("*", function(req, res) {

@@ -20,7 +20,6 @@ export default class LoginCard extends Component {
     const self = this;
 
     event.preventDefault();
-    // this.setState({ email, password });
     API.loginUser({ email, password })
     .then(response => {
         console.log('login user response', response.data);
