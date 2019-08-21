@@ -1,0 +1,33 @@
+
+/* .loginbox{
+    margin-top:30px;
+    width: 300px;
+    display: block;
+    margin:auto;
+  }
+
+  .card-img-top{
+    height: 100px;
+    width: 100px;
+    display: block;
+    margin: auto;
+   */
+  /* } */
+  .card-title{
+    text-align: center;
+  }
+  
+  .login-box {
+    width: 18rem;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+} 
+
+.signup-box {
+     width: 18rem;
+    margin-top: 25px;
+    margin-left: auto;
+    margin-right: auto;
+
+}
