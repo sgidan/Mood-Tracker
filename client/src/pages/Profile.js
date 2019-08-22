@@ -6,12 +6,14 @@ import * as Survey from "survey-react";
 import "survey-react/survey.css";
 import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
+import Entry from "../components/Entry/index";
 // import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from "axios";
-import { Card } from "react-bootstrap";
+import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
 var moment = require('moment');
+
 require("dotenv").config();
 //access by process.env.API_key
 
@@ -64,7 +66,19 @@ class Profile extends Component {
              console.log('moods', self.state.moods);
            });
 
-      });
+      let { _id } = response.data;
+      let surveyAns = response.data.score[0];
+      self.state.moods.push(surveyAns);
+      self.setState(
+        {
+          userId: _id,
+          moods: self.state.moods
+        },
+        function() {
+          console.log("moods", self.state.moods);
+        }
+      );
+    });
   };
 
   handleInputChange = event => {
@@ -112,32 +126,41 @@ class Profile extends Component {
   };
 
   handleSubmit = event => {
-    event.preventDefault();
+    // event.preventDefault();
     const { journals } = this.state;
     const self = this;
-    console.log(journals);
     const journalEntry = {};
     for (let key in this.state) {
-      if (key === 'one' || key === 'two' || key === 'three' || key === 'four'|| key === 'five'|| key === 'six'|| key === 'seven'|| key === 'eight') {
+      if (
+        key === "one" ||
+        key === "two" ||
+        key === "three" ||
+        key === "four" ||
+        key === "five" ||
+        key === "six" ||
+        key === "seven" ||
+        key === "eight"
+      ) {
         journalEntry[key] = this.state[key];
       }
     }
-    console.log('JOURNAL ENTRY********', journalEntry);
-    const {id} = JSON.parse(localStorage.getItem("user"));
+    console.log("JOURNAL ENTRY********", journalEntry);
+    const { id } = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", id);
-    API.saveJournal({id, journalEntry})
-    .then(response => {
-       console.log("resonse", response)
+    API.saveJournal({ id, journalEntry })
+      .then(response => {
+        console.log("resonse", response);
       })
       .catch(error => {
         if (error) {
           console.log(error);
           this.setState({ error });
         }
-      })
+      });
   };
 
   render() {
+    console.log("array of journals", this.state.journals);
     var model = new Survey.Model(this.state.json);
     return (
       <Container fluid>
@@ -182,42 +205,47 @@ class Profile extends Component {
                     placeholder="1."
                     onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="two" 
-                  name="q2" 
-                  placeholder="2." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="two"
+                    name="q2"
+                    placeholder="2."
+                    onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="three" 
-                  name="q3" 
-                  placeholder="3." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="three"
+                    name="q3"
+                    placeholder="3."
+                    onChange={this.handleOnChange.bind(this)}
                   />
                   <p>What would make today great?</p>
-                  <Input id="four" 
-                  name="q4" 
-                  placeholder="1." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="four"
+                    name="q4"
+                    placeholder="1."
+                    onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="five" 
-                  name="q5" 
-                  placeholder="2." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="five"
+                    name="q5"
+                    placeholder="2."
+                    onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="six" 
-                  name="q6" 
-                  placeholder="3." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="six"
+                    name="q6"
+                    placeholder="3."
+                    onChange={this.handleOnChange.bind(this)}
                   />
                   <p>Daily affirmations:</p>
                   <Input
-                  id="seven"
-                   name="q7" 
-                   placeholder="I am.." 
-                   onChange={this.handleOnChange.bind(this)}
-                   />
+                    id="seven"
+                    name="q7"
+                    placeholder="I am.."
+                    onChange={this.handleOnChange.bind(this)}
+                  />
                   <p>Brain Dump</p>
                   <TextArea
-                  id="eight"
+                    id="eight"
                     name="q8"
                     placeholder="Other notes, ramblings you need to release (Optional)"
                     onChange={this.handleOnChange.bind(this)}
@@ -228,6 +256,24 @@ class Profile extends Component {
             </Card.Body>
           </Card>
         </Container>
+        <Accordion>
+          {this.state.journals.reverse().map(entry => (
+            <Entry
+              key={entry.id}
+              id={entry.id}
+              one={entry.one}
+              two={entry.two}
+              three={entry.three}
+              four={entry.four}
+              five={entry.five}
+              six={entry.six}
+              seven={entry.seven}
+              eight={entry.eight}
+              date={entry.date}
+            />
+          ))}
+        </Accordion>
+
         {/* </Row> */}
       </Container>
     );
