@@ -21,7 +21,6 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    journalEntries: [],
     moods: [],
     json: {
       questions: [
@@ -107,10 +106,9 @@ class Profile extends Component {
   };
 
   handleSubmit = event => {
-    event.preventDefault();
+    // event.preventDefault();
     const { journals } = this.state;
     const self = this;
-    console.log(journals);
     const journalEntry = {};
     for (let key in this.state) {
       if (
@@ -139,14 +137,10 @@ class Profile extends Component {
           this.setState({ error });
         }
       });
-
-    const { journalEntries } = this.state;
-    // console.log("JOURNAL ENTRIES****", journalEntries);
-    // this.setState({ journalEntries: journalEntry });
-    console.log("THISSSS.STATE", this.state.journalEntries);
   };
 
   render() {
+    console.log("array of journals", this.state.journals);
     var model = new Survey.Model(this.state.json);
     return (
       <Container fluid>
@@ -240,8 +234,20 @@ class Profile extends Component {
           </Card>
         </Container>
         <Accordion>
-          {this.state.journalEntries.map(entry => (
-            <Entry key={entry.id} id={entry.id} date={entry.date} />
+          {this.state.journals.reverse().map(entry => (
+            <Entry
+              key={entry.id}
+              id={entry.id}
+              one={entry.one}
+              two={entry.two}
+              three={entry.three}
+              four={entry.four}
+              five={entry.five}
+              six={entry.six}
+              seven={entry.seven}
+              eight={entry.eight}
+              date={entry.date}
+            />
           ))}
         </Accordion>
 
