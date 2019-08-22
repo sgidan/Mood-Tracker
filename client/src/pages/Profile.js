@@ -19,15 +19,21 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    moods: '',
+    moods: "",
     json: {
       questions: [
-        {type: "radiogroup", name: "q1", title: "How are you feeling overall today?", isRequired:true, colCount:5, choices: [1,2,3,4,5]}
+        {
+          type: "radiogroup",
+          name: "q1",
+          title: "How are you feeling overall today?",
+          isRequired: true,
+          colCount: 5,
+          choices: [1, 2, 3, 4, 5]
+        }
       ]
     }
   };
 
-  
   //Define a callback methods on survey complete
   onComplete(survey, options) {
     //Write survey results into database
@@ -36,23 +42,21 @@ class Profile extends Component {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
     //is this supposed to be this.state.json??? or survey.data from above?
-    const {data} = survey
-    const {id} = user
-    API.submitSurvey({data, id}) 
-      .then(response => {
-          console.log('API submitSurvey response', response);
-          // this.setState({
-          //   moods: response.data.score[0]
-          // });
-      });
-  };
- 
+    const { data } = survey;
+    const { id } = user;
+    API.submitSurvey({ data, id }).then(response => {
+      console.log("API submitSurvey response", response);
+      // this.setState({
+      //   moods: response.data.score[0]
+      // });
+    });
+  }
 
   handleInputChange = event => {
     const { label, value } = event.target;
-    console.log("event.target", event.target.value)
+    console.log("event.target", event.target.value);
     // this.setState({
-      // [name]: value
+    // [name]: value
     // });
   };
 
@@ -81,15 +85,46 @@ class Profile extends Component {
         });
     });
   }
+  handleOnChange = event => {
+    this.setState({ [event.target.id]: event.target.value });
+    console.log(this.state);
+    console.log("event.target.id", [event.target.id]);
+  };
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const { journals } = this.state;
+    const self = this;
+    console.log(journals);
+    const journalEntry = {};
+    for (let key in this.state) {
+      if (key === 'one' || key === 'two' || key === 'three' || key === 'four'|| key === 'five'|| key === 'six'|| key === 'seven'|| key === 'eight') {
+        journalEntry[key] = this.state[key];
+      }
+    }
+    console.log('JOURNAL ENTRY********', journalEntry);
+    const {id} = JSON.parse(localStorage.getItem("user"));
+    console.log("LocalStorage results: ", id);
+    API.saveJournal({id, journalEntry})
+    .then(response => {
+       console.log("resonse", response)
+      })
+      .catch(error => {
+        if (error) {
+          console.log(error);
+          this.setState({ error });
+        }
+      })
+  };
 
   render() {
     var model = new Survey.Model(this.state.json);
-   return (
+    return (
       <Container fluid>
         <Row>
           <Col size="lg">
             <h1>Mood Quiz</h1>
-         <Survey.Survey model={model} onComplete={this.onComplete}/>
+            <Survey.Survey model={model} onComplete={this.onComplete} />
           </Col>
         </Row>
         <Row>
@@ -112,25 +147,61 @@ class Profile extends Component {
             <Card.Body>
               <Card.Title>{this.state.name}'s Daily Journal Entry</Card.Title>
               <Card.Text>
-                <form className="journalForm">
+                <form
+                  className="journalForm"
+                  action=""
+                  onSubmit={this.handleSubmit}
+                >
                   <p>I am grateful for...</p>
-                  <Input name="q1" placeholder="1." />
-                  <Input name="title" placeholder="2." />
-                  <Input name="title" placeholder="3." />
+                  <Input
+                    id="one"
+                    name="q1"
+                    placeholder="1."
+                    onChange={this.handleOnChange.bind(this)}
+                  />
+                  <Input id="two" 
+                  name="q2" 
+                  placeholder="2." 
+                  onChange={this.handleOnChange.bind(this)}
+                  />
+                  <Input id="three" 
+                  name="q3" 
+                  placeholder="3." 
+                  onChange={this.handleOnChange.bind(this)}
+                  />
                   <p>What would make today great?</p>
-                  <Input name="author" placeholder="1" />
-                  <Input name="title" placeholder="2" />
-                  <Input name="title" placeholder="3" />
+                  <Input id="four" 
+                  name="q4" 
+                  placeholder="1." 
+                  onChange={this.handleOnChange.bind(this)}
+                  />
+                  <Input id="five" 
+                  name="q5" 
+                  placeholder="2." 
+                  onChange={this.handleOnChange.bind(this)}
+                  />
+                  <Input id="six" 
+                  name="q6" 
+                  placeholder="3." 
+                  onChange={this.handleOnChange.bind(this)}
+                  />
                   <p>Daily affirmations:</p>
-                  <Input name="title" placeholder="I am.." />
+                  <Input
+                  id="seven"
+                   name="q7" 
+                   placeholder="I am.." 
+                   onChange={this.handleOnChange.bind(this)}
+                   />
                   <p>Brain Dump</p>
                   <TextArea
-                    name="synopsis"
+                  id="eight"
+                    name="q8"
                     placeholder="Other notes, ramblings you need to release (Optional)"
+                    onChange={this.handleOnChange.bind(this)}
                   />
+                  <FormBtn variant="primary">Submit Journal</FormBtn>
                 </form>
               </Card.Text>
-              <FormBtn variant="primary">Submit Journal</FormBtn>
             </Card.Body>
           </Card>
         </Container>
