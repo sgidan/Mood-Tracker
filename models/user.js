@@ -11,6 +11,10 @@ const userSchema = new Schema({
    type: Schema.Types.ObjectId, 
    ref: 'Journal'
   }],
+  // journalEntries:[{
+  //   type: Schema.Types.ObjectId, 
+  //   ref: 'Journal'
+  //  }],
   moods:[{
     type: Schema.Types.ObjectId, 
     ref: 'Mood'

@@ -6,10 +6,12 @@ import * as Survey from "survey-react";
 import "survey-react/survey.css";
 import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
+import Entry from "../components/Entry/index";
 // import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from "axios";
-import { Card } from "react-bootstrap";
+import { Card, Accordion } from "react-bootstrap";
+
 require("dotenv").config();
 //access by process.env.API_key
 
@@ -19,6 +21,7 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
+    journalEntries: [],
     moods: [],
     json: {
       questions: [
@@ -43,24 +46,25 @@ class Profile extends Component {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
     //is this supposed to be this.state.json??? or survey.data from above?
-    const {data} = survey
-    const {id} = user
-    API.submitSurvey({data, id}) 
-      .then(response => {
-        console.log(response);
-        // this.props.history.push("/profile");
+    const { data } = survey;
+    const { id } = user;
+    API.submitSurvey({ data, id }).then(response => {
+      console.log(response);
+      // this.props.history.push("/profile");
 
-          let {_id} = response.data
-          let surveyAns = response.data.score[0];
-          self.state.moods.push(surveyAns);
-          self.setState({
-             userId: _id,
-             moods: self.state.moods
-           }, function() {
-             console.log('moods', self.state.moods);
-           });
-
-      });
+      let { _id } = response.data;
+      let surveyAns = response.data.score[0];
+      self.state.moods.push(surveyAns);
+      self.setState(
+        {
+          userId: _id,
+          moods: self.state.moods
+        },
+        function() {
+          console.log("moods", self.state.moods);
+        }
+      );
+    });
   };
 
   handleInputChange = event => {
@@ -109,23 +113,37 @@ class Profile extends Component {
     console.log(journals);
     const journalEntry = {};
     for (let key in this.state) {
-      if (key === 'one' || key === 'two' || key === 'three' || key === 'four'|| key === 'five'|| key === 'six'|| key === 'seven'|| key === 'eight') {
+      if (
+        key === "one" ||
+        key === "two" ||
+        key === "three" ||
+        key === "four" ||
+        key === "five" ||
+        key === "six" ||
+        key === "seven" ||
+        key === "eight"
+      ) {
         journalEntry[key] = this.state[key];
       }
     }
-    console.log('JOURNAL ENTRY********', journalEntry);
-    const {id} = JSON.parse(localStorage.getItem("user"));
+    console.log("JOURNAL ENTRY********", journalEntry);
+    const { id } = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", id);
-    API.saveJournal({id, journalEntry})
-    .then(response => {
-       console.log("resonse", response)
+    API.saveJournal({ id, journalEntry })
+      .then(response => {
+        console.log("resonse", response);
       })
       .catch(error => {
         if (error) {
           console.log(error);
           this.setState({ error });
         }
-      })
+      });
+
+    const { journalEntries } = this.state;
+    // console.log("JOURNAL ENTRIES****", journalEntries);
+    // this.setState({ journalEntries: journalEntry });
+    console.log("THISSSS.STATE", this.state.journalEntries);
   };
 
   render() {
@@ -170,42 +188,47 @@ class Profile extends Component {
                     placeholder="1."
                     onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="two" 
-                  name="q2" 
-                  placeholder="2." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="two"
+                    name="q2"
+                    placeholder="2."
+                    onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="three" 
-                  name="q3" 
-                  placeholder="3." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="three"
+                    name="q3"
+                    placeholder="3."
+                    onChange={this.handleOnChange.bind(this)}
                   />
                   <p>What would make today great?</p>
-                  <Input id="four" 
-                  name="q4" 
-                  placeholder="1." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="four"
+                    name="q4"
+                    placeholder="1."
+                    onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="five" 
-                  name="q5" 
-                  placeholder="2." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="five"
+                    name="q5"
+                    placeholder="2."
+                    onChange={this.handleOnChange.bind(this)}
                   />
-                  <Input id="six" 
-                  name="q6" 
-                  placeholder="3." 
-                  onChange={this.handleOnChange.bind(this)}
+                  <Input
+                    id="six"
+                    name="q6"
+                    placeholder="3."
+                    onChange={this.handleOnChange.bind(this)}
                   />
                   <p>Daily affirmations:</p>
                   <Input
-                  id="seven"
-                   name="q7" 
-                   placeholder="I am.." 
-                   onChange={this.handleOnChange.bind(this)}
-                   />
+                    id="seven"
+                    name="q7"
+                    placeholder="I am.."
+                    onChange={this.handleOnChange.bind(this)}
+                  />
                   <p>Brain Dump</p>
                   <TextArea
-                  id="eight"
+                    id="eight"
                     name="q8"
                     placeholder="Other notes, ramblings you need to release (Optional)"
                     onChange={this.handleOnChange.bind(this)}
@@ -216,6 +239,12 @@ class Profile extends Component {
             </Card.Body>
           </Card>
         </Container>
+        <Accordion>
+          {this.state.journalEntries.map(entry => (
+            <Entry key={entry.id} id={entry.id} date={entry.date} />
+          ))}
+        </Accordion>
+
         {/* </Row> */}
       </Container>
     );
