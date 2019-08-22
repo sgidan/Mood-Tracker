@@ -5,7 +5,8 @@ import {
 
 // const data = [
 //     {
-//         score: [{q1: 5}], _id: "5d5ed4819aa75dda12486db2", date: "2019-08-22T17:44:33.735Z", __v: 0
+//      score[0].q1 = 5   
+//      score: [{q1: 5}], _id: "5d5ed4819aa75dda12486db2", date: "2019-08-22T17:44:33.735Z", __v: 0
 //     }
 // ]
 

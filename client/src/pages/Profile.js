@@ -11,7 +11,7 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from "axios";
 import { Card } from "react-bootstrap";
 import Graph from "../components/Graph";
-
+var moment = require('moment');
 require("dotenv").config();
 //access by process.env.API_key
 
@@ -40,7 +40,7 @@ class Profile extends Component {
   onComplete = (survey, options) => {
     let self = this;
     //Write survey results into database
-    console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
+    console.log("Survey results: " + JSON.stringify(survey.data.q1)); // {"name": [choice]}
     //pull ID from local storage.
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
@@ -49,11 +49,13 @@ class Profile extends Component {
     const {id} = user
     API.submitSurvey({data, id}) 
       .then(response => {
-        console.log(response);
         // this.props.history.push("/profile");
 
           let {_id} = response.data
-          let surveyAns = response.data.score[0];
+          let surveyAns = response.data;
+          console.log(surveyAns);
+          surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
+          console.log(surveyAns);
           self.state.moods.push(surveyAns);
           self.setState({
              userId: _id,
@@ -84,6 +86,11 @@ class Profile extends Component {
       API.getUserProfile(user.id)
         .then(res => {
           console.log("get user profile response", res);
+          let test = res.data.moods.map(survey => {
+            console.log('SURVEY*****', survey)
+            survey.date = moment(survey.date).format("DD/MM/YYYY");
+          });
+          console.log('TESTING TETING************', test);
           this.setState({
             //  name: res.data.name,
             journals: res.data.journals,
