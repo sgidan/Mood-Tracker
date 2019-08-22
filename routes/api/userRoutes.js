@@ -9,7 +9,6 @@ router.route('/signup')
 router.route('/profile/:id')
     .get(getUserProfile)
 
-
 router.route('/login')
     .post(loginUser) 
 

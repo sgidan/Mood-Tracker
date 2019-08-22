@@ -43,13 +43,15 @@ class Profile extends Component {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
     //is this supposed to be this.state.json??? or survey.data from above?
-
     const {data} = survey
     const {id} = user
     API.submitSurvey({data, id}) 
       .then(response => {
+        console.log(response);
+        // this.props.history.push("/profile");
+
           let {_id} = response.data
-          let surveyAns = response.data.score[0].data.q1;
+          let surveyAns = response.data.score[0];
           self.state.moods.push(surveyAns);
           self.setState({
              userId: _id,
