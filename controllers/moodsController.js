@@ -3,11 +3,13 @@ const db = require("../models");
 module.exports = {
   submitSurvey: function(req, res) {
     console.log("\n Inside moodController ------", req.body);
-    db.Mood.create({ score: req.body })
+    db.Mood.create({ score: req.body.data })
       // db.User.findById(req.params.id)
       .then(response => {
-        console.log("survey response value", response.score[0].data.q1);
-        res.json(response);
+        console.log("survey response value\n", response);
+
+        res.json(response); // WE CHANGED THE RESPONSE SENT TO FRONT END SO ERROR WILL OCCUR ON FRONT END
+
       })
       // find user and update ref w/ mood _id
 
