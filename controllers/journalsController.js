@@ -19,8 +19,14 @@ module.exports ={
       // },
       saveJournal: function(req, res) {
         db.Journal
-          .create(req.body)
-          .then(dbModel => res.json(dbModel))
+          .create(req.body.journalEntry)
+          .then(dbJournal => {
+            res.json(dbJournal);
+            return db.User.updateOne(
+              {_id: req.body.id},
+              {$push: {journals: dbJournal._id}}
+            )
+          })
           .catch(err => res.status(422).json(err));
       },
       // update: function(req, res) {

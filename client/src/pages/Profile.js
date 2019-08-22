@@ -103,7 +103,9 @@ class Profile extends Component {
       }
     }
     console.log('JOURNAL ENTRY********', journalEntry);
-    API.saveJournal(journalEntry)
+    const {id} = JSON.parse(localStorage.getItem("user"));
+    console.log("LocalStorage results: ", id);
+    API.saveJournal({id, journalEntry})
     .then(response => {
        console.log("resonse", response)
       })
