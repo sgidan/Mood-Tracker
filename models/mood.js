@@ -1,9 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 ///do we want this to be required??***********
+///change date format
 const moodSchema = new Schema({
     date: { type: Date, default: Date.now },
-    score:[]
+    q1: Number,
+    q2: Number
     
 });
 
