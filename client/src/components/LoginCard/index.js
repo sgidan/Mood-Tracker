@@ -2,6 +2,7 @@
 import API from "../../utils/API";
 import React, { Component } from "react";
 // console.log(styles);
+import  "./style.css";
 
 export default class LoginCard extends Component {
   state = {
