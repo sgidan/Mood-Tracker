@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const moodSchema = new Schema({
     date: { type: Date, default: Date.now },
     score:[]
-    
 });
 
 const Mood = mongoose.model("Mood", moodSchema);

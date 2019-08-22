@@ -10,6 +10,8 @@ import { Col, Row, Container } from "../components/Grid";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from "axios";
 import { Card } from "react-bootstrap";
+import Graph from "../components/Graph";
+
 require("dotenv").config();
 //access by process.env.API_key
 
@@ -146,9 +148,12 @@ class Profile extends Component {
           </Col>
 
           <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>react-trend graph for moods</h1>
-            </Jumbotron>
+            {!this.state.moods.length ? 
+            <p>Fill out survey to get score</p> 
+            : 
+            <Graph moods={this.state.moods}/>
+            }
+            
           </Col>
         </Row>
         {/* <Row> */}
