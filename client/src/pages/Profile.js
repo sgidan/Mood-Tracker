@@ -19,7 +19,7 @@ class Profile extends Component {
     error: "",
     userId: "",
     journals: [],
-    moods: "",
+    moods: [],
     json: {
       questions: [
         {
@@ -35,22 +35,31 @@ class Profile extends Component {
   };
 
   //Define a callback methods on survey complete
-  onComplete(survey, options) {
+  onComplete = (survey, options) => {
+    let self = this;
     //Write survey results into database
     console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
     //pull ID from local storage.
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
     //is this supposed to be this.state.json??? or survey.data from above?
-    const { data } = survey;
-    const { id } = user;
-    API.submitSurvey({ data, id }).then(response => {
-      console.log("API submitSurvey response", response);
-      // this.setState({
-      //   moods: response.data.score[0]
-      // });
-    });
-  }
+
+    const {data} = survey
+    const {id} = user
+    API.submitSurvey({data, id}) 
+      .then(response => {
+          let {_id} = response.data
+          let surveyAns = response.data.score[0].data.q1;
+          self.state.moods.push(surveyAns);
+          self.setState({
+             userId: _id,
+             moods: self.state.moods
+           }, function() {
+             console.log('moods', self.state.moods);
+           });
+
+      });
+  };
 
   handleInputChange = event => {
     const { label, value } = event.target;
