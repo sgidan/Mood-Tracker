@@ -11,6 +11,8 @@ import Entry from "../components/Entry/index";
 import { Input, TextArea, FormBtn } from "../components/Form";
 import axios from "axios";
 import { Card, Accordion } from "react-bootstrap";
+import Graph from "../components/Graph";
+var moment = require('moment');
 
 require("dotenv").config();
 //access by process.env.API_key
@@ -40,16 +42,29 @@ class Profile extends Component {
   onComplete = (survey, options) => {
     let self = this;
     //Write survey results into database
-    console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
+    console.log("Survey results: " + JSON.stringify(survey.data.q1)); // {"name": [choice]}
     //pull ID from local storage.
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
     //is this supposed to be this.state.json??? or survey.data from above?
-    const { data } = survey;
-    const { id } = user;
-    API.submitSurvey({ data, id }).then(response => {
-      console.log(response);
-      // this.props.history.push("/profile");
+    const {data} = survey
+    const {id} = user
+    API.submitSurvey({data, id}) 
+      .then(response => {
+        // this.props.history.push("/profile");
+
+          let {_id} = response.data
+          let surveyAns = response.data;
+          console.log(surveyAns);
+          surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
+          console.log(surveyAns);
+          self.state.moods.push(surveyAns);
+          self.setState({
+             userId: _id,
+             moods: self.state.moods
+           }, function() {
+             console.log('moods', self.state.moods);
+           });
 
       let { _id } = response.data;
       let surveyAns = response.data.score[0];
@@ -85,6 +100,11 @@ class Profile extends Component {
       API.getUserProfile(user.id)
         .then(res => {
           console.log("get user profile response", res);
+          let test = res.data.moods.map(survey => {
+            console.log('SURVEY*****', survey)
+            survey.date = moment(survey.date).format("DD/MM/YYYY");
+          });
+          console.log('TESTING TETING************', test);
           this.setState({
             //  name: res.data.name,
             journals: res.data.journals,
@@ -158,9 +178,12 @@ class Profile extends Component {
           </Col>
 
           <Col size="md-6 sm-12">
-            <Jumbotron>
-              <h1>react-trend graph for moods</h1>
-            </Jumbotron>
+            {!this.state.moods.length ? 
+            <p>Fill out survey to get score</p> 
+            : 
+            <Graph moods={this.state.moods}/>
+            }
+            
           </Col>
         </Row>
         {/* <Row> */}
