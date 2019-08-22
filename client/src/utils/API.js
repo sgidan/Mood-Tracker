@@ -26,5 +26,10 @@ export default {
         console.log('inside submitSurvey function', moodAns);
         return axios.post('/api/moods/survey', moodAns);  
     },
+//journal routes: api/journals
+    saveJournal: function(journalEntry){
+        console.log('inside loadJournals function', journalEntry )
+        return axios.post('/api/journal/save', journalEntry )
+    }
 }
 
