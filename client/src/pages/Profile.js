@@ -31,6 +31,22 @@ class Profile extends Component {
           isRequired: true,
           colCount: 5,
           choices: [1, 2, 3, 4, 5]
+        },
+        {
+          type: "radiogroup",
+          name: "q2",
+          title: "How much energy do you have today?",
+          isRequired: true,
+          colCount: 5,
+          choices: [1, 2, 3, 4, 5]
+        },
+        {
+          type: "radiogroup",
+          name: "q3",
+          title: "How did you sleep last night?",
+          isRequired: true,
+          colCount: 5,
+          choices: [1, 2, 3, 4, 5]
         }
       ]
     }
@@ -40,7 +56,7 @@ class Profile extends Component {
   onComplete = (survey, options) => {
     let self = this;
     //Write survey results into database
-    console.log("Survey results: " + JSON.stringify(survey.data.q1)); // {"name": [choice]}
+    console.log("Survey results: " + JSON.stringify(survey.data)); // {"name": [choice]}
     //pull ID from local storage.
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);

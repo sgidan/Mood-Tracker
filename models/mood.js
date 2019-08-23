@@ -5,7 +5,8 @@ const Schema = mongoose.Schema;
 const moodSchema = new Schema({
     date: { type: Date, default: Date.now },
     q1: Number,
-    q2: Number
+    q2: Number,
+    q3: Number
     
 });
 
