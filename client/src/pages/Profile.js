@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
-import Form from "react-bootstrap/Form";
+// import Form from "react-bootstrap/Form";
 import * as Survey from "survey-react";
 import "survey-react/survey.css";
-import DeleteBtn from "../components/DeleteBtn";
+// import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
 import Entry from "../components/Entry/index";
 // import { List, ListItem } from "../components/List";
@@ -243,7 +243,7 @@ class Profile extends Component {
                   />
                   <Input
                     id="five"
-                    name="q5" 
+                    name="q5"
                     placeholder="2."
                     onChange={this.handleOnChange.bind(this)}
                   />
