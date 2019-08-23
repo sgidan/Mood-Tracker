@@ -61,6 +61,7 @@ export default class Example extends PureComponent {
         <Legend />
         <Line type="monotone" dataKey="q1" stroke="#8884d8" activeDot={{ r: 8 }} />
         <Line type="monotone" dataKey="q2" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="q3" stroke="#ff7300" />
       </LineChart>
     );
   }
