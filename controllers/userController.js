@@ -1,75 +1,102 @@
 // require models (which typically we refer to as db)
-const db = require('../models');
+const db = require("../models");
+const { createToken, isValidToken } = require("../utilities/tokenService");
+const cookieOptions = {
+  httpOnly: true,
+  // secure: true, on deployment
+  signed: true,
+  maxAge: (1000 * 60) ^ 60,
+  expiresIn: new Date(Date.now() + 90000)
+};
+
+const signupUser = async (req, res) => {
+  try {
+    let user = await db.User.create(req.body);
+    let token = await createToken(user);
+    res
+      .cookie("token", token, cookieOptions)
+      .json({ message: "successfully registered" });
+  } catch (err) {
+    if (err) console.log(err);
+    res.status(422).json(err);
+  }
+};
+
+const getUserProfile = function(req, res) {
+  console.log("Inside getUserProfile > getUserProfile");
+  db.User.findById(req.params.id)
+    .populate("journals")
+    .populate("moods")
+    .then(dbUser => res.json(dbUser))
+    .catch(err => res.status(422).json(err));
+};
+
+const loginUser = async (req, res) => {
+  try {
+    let user = await db.User.findOne({ email: req.body.email });
+    console.log(user);
+    try {
+      let isMatch = await user.comparePassword(req.body.password);
+      if (isMatch) {
+        let token = await createToken(user);
+        res
+          .cookie("token", token, cookieOptions)
+          .json({ message: "Successfully logged in" });
+      } else {
+        res.send({
+          message: "Your username or password was incorrect, please try again",
+          error: 404
+        });
+      }
+    } catch (err) {
+      if (err) res.send(err);
+    }
+  } catch (err) {
+    if (err) res.send(err);
+  }
+};
+
+
+const cookieCheck = async (req, res) => {
+  if (Object.keys(req.signedCookies).length === 0) {
+    res.status(401).json({ message: "You are not authorized to do that" });
+  } else {
+    const { token } = req.signedCookies;
+    if (token) {
+      try {
+        let {
+          user: { _id, name, email, password }
+        } = await isValidToken(token);
+        try {
+          let user = await db.User.findOne({ name, password, _id, email });
+          res.send({
+            email: user.email,
+            name: user.name,
+            id: user._id
+          });
+        } catch (err) {
+          if (err) throw err;
+        }
+      } catch (err) {
+        if (err) throw err;
+      }
+    } else {
+      res.send({ message: "Cookie has expired, please log in." });
+    }
+  }
+};
+
+const logoutUser = function(req, res) {
+  res
+    .clearCookie("token")
+    .json({ message: "You have successfully logged out" });
+};
 
 module.exports = {
+  logoutUser,
+  loginUser,
+  signupUser,
+  getUserProfile,
+  cookieCheck
+};
 
-  signupUser: function(req, res) {
-    console.log('Inside userController', req.body);
-    db.User.create(req.body)
-      .then(response => res.json(response))
-      .catch(err => res.status(422).json(err));
-  },
-
-  getUserProfile: function(req, res){
-    console.log('Inside getUserProfile > getUserProfile');
-      db.User.findById(req.params.id)
-        .populate('journals')
-        .populate('moods')
-        .then(dbUser => res.json(dbUser))
-        .catch(err => res.status(422).json(err));
-
-  },
-
-  loginUser: function(req, res) {
-    console.log('Inside userController > loginUser', req.body);
-    const { email, password } = req.body;
-    db.User.findOne({email})
-      .then(dbUser => {
-        console.log(dbUser);
-        if (dbUser) {
-          console.log("this works")
-          if (dbUser.password === password){
-            res.json(dbUser)
-          }
-          else {
-            res.send('Incorrect Password')
-          }
-        }
-      })
-  },
-
-  logoutUser: function(req, res) {
-    console.log('Inside userController > logoutUser');
-  }
-  
-}
-
-
-
-
-
-////////// OLD CODE //////////////
-// const login = function(req, res) {
-//   res.send("login route");
-// };
-
-// const signup = function(req, res) {
-//   // use model to inform itself how to save information to the database
-//   // req.body will be an object that mirrors you user model but with the values being user's input
-//   console.log('Inside userController signup:', req.body);
-
-//   // db.User.create(req.body)
-//   // .then(res => {
-//   //   console.log('User created response:', res);
-//   //   res.send('Sign up successful!')
-//   // }); // this is the response that's sent back up to front end. but instead it will be res.json or res.send with either a status code or message, or the information requested 
-
-//   // res.send("signup route"); 
-// };
-
-// const logout = function(req, res) {
-//   // mongoose for delete
-//   res.send("logout route");
-// };
-
-// module.exports = { login, logout, signup };
