@@ -11,7 +11,7 @@ export default class Services extends React.Component {
                 About us
                 <small>M2 Consulting is Bringing Small Businesses to the Agile century</small>
                 <ResponsiveEmbed a16by9>
-                    <embed src="https://youtu.be/uC9VtVnuPD0"/>
+                    <embed src="https://www.youtube.com/embed/7lECIsRif10"/>
                 </ResponsiveEmbed>
             </Pageheader>
         </div>

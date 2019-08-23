@@ -2,31 +2,32 @@
 import API from "../../utils/API";
 import React, { Component } from "react";
 // console.log(styles);
-import  "./style.css";
+import "./style.css";
 
 export default class LoginCard extends Component {
   state = {
     email: "",
     password: "",
+    user: "",
     error: null
   };
 
   handleOnChange = event => {
     this.setState({ [event.target.id]: event.target.value });
-    console.log("event.target.id", [event.target.id])
+    console.log("event.target.id", [event.target.id]);
   };
 
   handleSubmit = event => {
     const { email, password } = this.state;
     const self = this;
-
+    alert("submit");
     event.preventDefault();
     API.loginUser({ email, password })
-    .then(response => {
-        console.log('login user response', response.data);
-        const {_id, name, moods, journals} = response.data;
-        let user = {id:_id, name};
-        console.log("login user id", user)
+      .then(response => {
+        console.log("login user response", response.data);
+        const { _id, name, moods, journals } = response.data;
+        let user = { id: _id, name };
+        console.log("login user id", user);
         // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
         // localStorage.clear();
         localStorage.setItem("user", JSON.stringify(user));
@@ -40,8 +41,8 @@ export default class LoginCard extends Component {
           this.setState({ error });
         }
       });
-      console.log('this.props', this.props);
-      console.log('this.props.history', this.props.history);
+    console.log("this.props", this.props);
+    console.log("this.props.history", this.props.history);
   };
 
   render() {
@@ -63,7 +64,7 @@ export default class LoginCard extends Component {
                   <label for="email">Email: </label>
                   <input
                     type="email"
-                    required= 'true'
+                    required="true"
                     className="form-control"
                     id="email"
                     name="email"
@@ -73,7 +74,7 @@ export default class LoginCard extends Component {
                   />
                 </div>
               </li>
-              
+
               <li className="list-group-item">
                 <div className="form-group">
                   <label for="pass">Password:(min 6 characters)</label>
@@ -81,7 +82,7 @@ export default class LoginCard extends Component {
                     type="password"
                     className="form-control"
                     name="password"
-                    minlength="6" 
+                    minlength="6"
                     required="true"
                     id="password"
                     value={this.state.password}
@@ -92,7 +93,6 @@ export default class LoginCard extends Component {
               </li>
             </ul>
             <div className="card-body">
-        
               <button
                 type="submit"
                 href="/profile"

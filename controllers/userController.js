@@ -13,9 +13,11 @@ const signupUser = async (req, res) => {
   try {
     let user = await db.User.create(req.body);
     let token = await createToken(user);
-    res
-      .cookie("token", token, cookieOptions)
-      .json({ message: "successfully registered" });
+    res.cookie("token", token, cookieOptions).json({
+      message: "successfully registered",
+      id: user._id,
+      name: user.name
+    });
   } catch (err) {
     if (err) console.log(err);
     res.status(422).json(err);
@@ -39,9 +41,7 @@ const loginUser = async (req, res) => {
       let isMatch = await user.comparePassword(req.body.password);
       if (isMatch) {
         let token = await createToken(user);
-        res
-          .cookie("token", token, cookieOptions)
-          .json({ message: "Successfully logged in" });
+        res.cookie("token", token, cookieOptions).json({ user });
       } else {
         res.send({
           message: "Your username or password was incorrect, please try again",
@@ -56,10 +56,9 @@ const loginUser = async (req, res) => {
   }
 };
 
-
 const cookieCheck = async (req, res) => {
   if (Object.keys(req.signedCookies).length === 0) {
-    res.status(401).json({ message: "You are not authorized to do that" });
+    res.status(401).json({ message: "You are not authorized for this action" });
   } else {
     const { token } = req.signedCookies;
     if (token) {
@@ -99,4 +98,3 @@ module.exports = {
   getUserProfile,
   cookieCheck
 };
-

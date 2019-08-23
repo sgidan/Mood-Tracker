@@ -12,13 +12,12 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
 import moment from "moment";
-import axios from "axios";
 
 class Profile extends Component {
   state = {
     name: "",
     error: "",
-    userId: "",
+    user: "",
     journals: [],
     moods: [],
     videos: [],
@@ -94,39 +93,32 @@ class Profile extends Component {
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
-    console.log("user is here", user);
-    this.setState({ userId: user.id, name: user.name }, function() {
-      console.log("USERID", this.state.userId);
-
-      // axios.get("/api/users/profile/:id")
-      // TODO: Will need to update 'name' to specific id or something more secure/poignant
-      API.getUserProfile(user.id)
+    this.setState({ user }, function() {
+      API.getUserProfile(this.state.user.id)
         .then(res => {
-          console.log("get user profile response", res);
           let test = res.data.moods.map(survey => {
             console.log("SURVEY*****", survey);
             survey.date = moment(survey.date).format("DD/MM/YYYY");
           });
-          console.log("TESTING TETING************", test);
-          this.setState({
-            //  name: res.data.name,
-            videos: [
-              "https://www.youtube.com/embed/7lECIsRif10",
-              "https://www.youtube.com/embed/dLme6kE5XaU",
-              "https://www.youtube.com/embed/UhWFddWz1Nk",
-              "https://www.youtube.com/embed/pvgfucVF5cU",
-              "https://www.youtube.com/embed/pJhUs1L_RQo",
-              "https://www.youtube.com/embed/xFQLPURE8Ok",
-              "https://www.youtube.com/embed/8Su5VtKeXU8",
-              "https://www.youtube.com/embed/lbJv4AiDatg",
-              "https://www.youtube.com/embed/7jZdXWGKc7M",
-              "https://www.youtube.com/embed/4lTbWQ8zD3w",
-              "https://www.youtube.com/embed/CHm2gTkNQxc",
-            ],
-            journals: res.data.journals,
-            moods: res.data.moods
-          });
-          console.log("STATE", this.state);
+          // console.log("TESTING TETING************", test);
+          // this.setState({
+          //   //  name: res.data.name,
+          //   videos: [
+          //     "https://www.youtube.com/embed/7lECIsRif10",
+          //     "https://www.youtube.com/embed/dLme6kE5XaU",
+          //     "https://www.youtube.com/embed/UhWFddWz1Nk",
+          //     "https://www.youtube.com/embed/pvgfucVF5cU",
+          //     "https://www.youtube.com/embed/pJhUs1L_RQo",
+          //     "https://www.youtube.com/embed/xFQLPURE8Ok",
+          //     "https://www.youtube.com/embed/8Su5VtKeXU8",
+          //     "https://www.youtube.com/embed/lbJv4AiDatg",
+          //     "https://www.youtube.com/embed/7jZdXWGKc7M",
+          //     "https://www.youtube.com/embed/4lTbWQ8zD3w",
+          //     "https://www.youtube.com/embed/CHm2gTkNQxc"
+          //   ],
+          //   journals: res.data.journals,
+          //   moods: res.data.moods
+          // });
         })
         .catch(err => {
           if (err) {
@@ -196,7 +188,7 @@ class Profile extends Component {
                 height="315"
                 src={videos[Math.floor(Math.random() * videos.length)]}
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               />
             </Jumbotron>
           </Col>
@@ -214,7 +206,9 @@ class Profile extends Component {
           <Card className="kevin">
             <Card.Header as="h5">Journal</Card.Header>
             <Card.Body>
-              <Card.Title>{name}'s Daily Journal Entry</Card.Title>
+              <Card.Title>
+                {this.state.user.name}'s Daily Journal Entry
+              </Card.Title>
               <Card.Text>
                 <form
                   className="journalForm"
@@ -249,7 +243,7 @@ class Profile extends Component {
                   />
                   <Input
                     id="five"
-                    name="q5"
+                    name="q5" 
                     placeholder="2."
                     onChange={this.handleOnChange.bind(this)}
                   />
