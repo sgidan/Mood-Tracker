@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Jumbotron from "../components/Jumbotron";
 import API from "../utils/API";
-import Form from "react-bootstrap/Form";
+// import Form from "react-bootstrap/Form";
 import * as Survey from "survey-react";
 import "survey-react/survey.css";
-import DeleteBtn from "../components/DeleteBtn";
+// import DeleteBtn from "../components/DeleteBtn";
 import { Col, Row, Container } from "../components/Grid";
 import Entry from "../components/Entry/index";
 // import { List, ListItem } from "../components/List";
@@ -12,7 +12,7 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
 import moment from "moment";
-import axios from "axios";
+// import axios from "axios";
 
 class Profile extends Component {
   state = {
