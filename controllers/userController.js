@@ -21,16 +21,19 @@ module.exports = {
   },
 
   loginUser: function(req, res) {
-    console.log('Inside userController > loginUser', req.body);
+    console.log('Inside userController > loginUser', req.body.email);
     const { email, password } = req.body;
     db.User.findOne({email})
       .then(dbUser => {
-        console.log(dbUser);
+        console.log("here", dbUser);
         if (dbUser) {
           console.log("this works")
+          // if (!dbUser) {
+          //   console.log("No user found")
           if (dbUser.password === password){
-            res.json(dbUser)
-          }
+            res.json(dbUser);
+            }
+          
           else {
             res.send('Incorrect Password')
           }
