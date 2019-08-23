@@ -9,13 +9,10 @@ import { Col, Row, Container } from "../components/Grid";
 import Entry from "../components/Entry/index";
 // import { List, ListItem } from "../components/List";
 import { Input, TextArea, FormBtn } from "../components/Form";
-import axios from "axios";
 import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
-var moment = require('moment');
-
-require("dotenv").config();
-//access by process.env.API_key
+import moment from "moment";
+import axios from "axios";
 
 class Profile extends Component {
   state = {
@@ -24,6 +21,7 @@ class Profile extends Component {
     userId: "",
     journals: [],
     moods: [],
+    videos: [],
     json: {
       questions: [
         {
@@ -47,27 +45,16 @@ class Profile extends Component {
     const user = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", user.id);
     //is this supposed to be this.state.json??? or survey.data from above?
-    const {data} = survey
-    const {id} = user
-    API.submitSurvey({data, id}) 
-      .then(response => {
-        // this.props.history.push("/profile");
-
-          let {_id} = response.data
-          let surveyAns = response.data;
-          console.log(surveyAns);
-          surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
-          console.log(surveyAns);
-          self.state.moods.push(surveyAns);
-          self.setState({
-             userId: _id,
-             moods: self.state.moods
-           }, function() {
-             console.log('moods', self.state.moods);
-           });
+    const { data } = survey;
+    const { id } = user;
+    API.submitSurvey({ data, id }).then(response => {
+      // this.props.history.push("/profile");
 
       let { _id } = response.data;
-      let surveyAns = response.data.score[0];
+      let surveyAns = response.data;
+      console.log(surveyAns);
+      surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
+      console.log(surveyAns);
       self.state.moods.push(surveyAns);
       self.setState(
         {
@@ -101,12 +88,25 @@ class Profile extends Component {
         .then(res => {
           console.log("get user profile response", res);
           let test = res.data.moods.map(survey => {
-            console.log('SURVEY*****', survey)
+            console.log("SURVEY*****", survey);
             survey.date = moment(survey.date).format("DD/MM/YYYY");
           });
-          console.log('TESTING TETING************', test);
+          console.log("TESTING TETING************", test);
           this.setState({
             //  name: res.data.name,
+            videos: [
+              "https://www.youtube.com/embed/7lECIsRif10",
+              "https://www.youtube.com/embed/dLme6kE5XaU",
+              "https://www.youtube.com/embed/UhWFddWz1Nk",
+              "https://www.youtube.com/embed/pvgfucVF5cU",
+              "https://www.youtube.com/embed/pJhUs1L_RQo",
+              "https://www.youtube.com/embed/xFQLPURE8Ok",
+              "https://www.youtube.com/embed/8Su5VtKeXU8",
+              "https://www.youtube.com/embed/lbJv4AiDatg",
+              "https://www.youtube.com/embed/7jZdXWGKc7M",
+              "https://www.youtube.com/embed/4lTbWQ8zD3w",
+              "https://www.youtube.com/embed/CHm2gTkNQxc",
+            ],
             journals: res.data.journals,
             moods: res.data.moods
           });
@@ -160,8 +160,9 @@ class Profile extends Component {
   };
 
   render() {
-    console.log("array of journals", this.state.journals);
-    var model = new Survey.Model(this.state.json);
+    const { journals, json, name, videos, moods } = this.state;
+    console.log("array of journals", journals);
+    var model = new Survey.Model(json);
     return (
       <Container fluid>
         <Row>
@@ -173,17 +174,23 @@ class Profile extends Component {
         <Row>
           <Col size="md">
             <Jumbotron>
-              <h1>Scraped youtube videos</h1>
+              <iframe
+                className="embed-responsive-item"
+                width="560"
+                height="315"
+                src={videos[Math.floor(Math.random() * videos.length)]}
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+              />
             </Jumbotron>
           </Col>
 
           <Col size="md-6 sm-12">
-            {!this.state.moods.length ? 
-            <p>Fill out survey to get score</p> 
-            : 
-            <Graph moods={this.state.moods}/>
-            }
-            
+            {!moods.length ? (
+              <p>Fill out survey to get score</p>
+            ) : (
+              <Graph moods={moods} />
+            )}
           </Col>
         </Row>
         {/* <Row> */}
@@ -191,7 +198,7 @@ class Profile extends Component {
           <Card className="kevin">
             <Card.Header as="h5">Journal</Card.Header>
             <Card.Body>
-              <Card.Title>{this.state.name}'s Daily Journal Entry</Card.Title>
+              <Card.Title>{name}'s Daily Journal Entry</Card.Title>
               <Card.Text>
                 <form
                   className="journalForm"
@@ -257,7 +264,7 @@ class Profile extends Component {
           </Card>
         </Container>
         <Accordion>
-          {this.state.journals.reverse().map(entry => (
+          {journals.reverse().map(entry => (
             <Entry
               key={entry.id}
               id={entry.id}
