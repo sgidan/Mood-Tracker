@@ -25,6 +25,10 @@ const signupUser = async (req, res) => {
 };
 
 const getUserProfile = function(req, res) {
+  //WHY ARENT WE GETTINNG INTO HERE HELP
+  //
+  //
+  //
   console.log("Inside getUserProfile > getUserProfile");
   db.User.findById(req.params.id)
     .populate("journals")

@@ -85,8 +85,12 @@ class Profile extends Component {
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
-    this.setState({ user }, function() {
+    this.setState({user} , function() {
+      console.log("this state user idk", this.state.user._id);
       API.getUserProfile(this.state.user._id)
+      //THIS IS WHERE IT GETS LOST & GOES INTO ERRORS WHYY? HOW FIX? PLEASE HALP
+      //
+      //
         .then(res => {
           let test = res.data.moods.map(survey => {
             console.log("SURVEY*****", survey);
@@ -94,7 +98,6 @@ class Profile extends Component {
           });
           console.log("TESTING TETING************", test);
           this.setState({
-            //  name: res.data.name,
             videos: [
               "https://www.youtube.com/embed/7lECIsRif10",
               "https://www.youtube.com/embed/dLme6kE5XaU",
@@ -113,6 +116,8 @@ class Profile extends Component {
           });
         })
         .catch(err => {
+    console.log('-----------------error', err);
+
           if (err) {
             this.setState({ error: err.message });
           }
@@ -125,7 +130,7 @@ class Profile extends Component {
   };
 
   handleSubmit = event => {
-    // event.preventDefault();
+    event.preventDefault();
     const { journals } = this.state;
     const self = this;
     const journalEntry = {};
@@ -143,11 +148,11 @@ class Profile extends Component {
         journalEntry[key] = this.state[key];
       }
     }
-    debugger;
+
     console.log("JOURNAL ENTRY********", journalEntry);
-    const { id } = JSON.parse(localStorage.getItem("user"));
-    console.log("LocalStorage results: ", id);
-    API.saveJournal({ id, journalEntry })
+    const { _id } = JSON.parse(localStorage.getItem("user"));
+    console.log("LocalStorage results: ", _id);
+    API.saveJournal({ _id, journalEntry })
       .then(response => {
         console.log("resonse", response);
       })
