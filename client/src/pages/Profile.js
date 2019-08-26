@@ -13,14 +13,29 @@ import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
 import moment from "moment";
 
+const videos = [
+  "https://www.youtube.com/embed/7lECIsRif10",
+  "https://www.youtube.com/embed/dLme6kE5XaU",
+  "https://www.youtube.com/embed/UhWFddWz1Nk",
+  "https://www.youtube.com/embed/pvgfucVF5cU",
+  "https://www.youtube.com/embed/pJhUs1L_RQo",
+  "https://www.youtube.com/embed/xFQLPURE8Ok",
+  "https://www.youtube.com/embed/8Su5VtKeXU8",
+  "https://www.youtube.com/embed/lbJv4AiDatg",
+  "https://www.youtube.com/embed/7jZdXWGKc7M",
+  "https://www.youtube.com/embed/4lTbWQ8zD3w",
+  "https://www.youtube.com/embed/CHm2gTkNQxc"
+];
+
 class Profile extends Component {
   state = {
     name: "",
     error: "",
     user: "",
+    entry: {},
     journals: [],
     moods: [],
-    videos: [],
+    videos: videos,
     json: {
       questions: [
         {
@@ -62,67 +77,44 @@ class Profile extends Component {
     //is this supposed to be this.state.json??? or survey.data from above?
     const { data } = survey;
     const { id } = user;
+
     API.submitSurvey({ data, id }).then(response => {
       // this.props.history.push("/profile");
-
       let { _id } = response.data;
       let surveyAns = response.data;
-      console.log(surveyAns);
       surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
-      console.log(surveyAns);
       self.state.moods.push(surveyAns);
-      self.setState(
-        {
-          userId: _id,
-          moods: self.state.moods
-        },
-        function() {
-          console.log("moods", self.state.moods);
-        }
-      );
+      self.setState({
+        moods: self.state.moods
+      });
     });
   };
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
-    this.setState({user} , function() {
-      console.log("this state user idk", this.state.user._id);
-      API.getUserProfile(this.state.user._id)
-      //THIS IS WHERE IT GETS LOST & GOES INTO ERRORS WHYY? HOW FIX? PLEASE HALP
-      //
-      //
-        .then(res => {
-          let test = res.data.moods.map(survey => {
-            console.log("SURVEY*****", survey);
-            survey.date = moment(survey.date).format("DD/MM/YYYY");
-          });
-          console.log("TESTING TETING************", test);
-          this.setState({
-            videos: [
-              "https://www.youtube.com/embed/7lECIsRif10",
-              "https://www.youtube.com/embed/dLme6kE5XaU",
-              "https://www.youtube.com/embed/UhWFddWz1Nk",
-              "https://www.youtube.com/embed/pvgfucVF5cU",
-              "https://www.youtube.com/embed/pJhUs1L_RQo",
-              "https://www.youtube.com/embed/xFQLPURE8Ok",
-              "https://www.youtube.com/embed/8Su5VtKeXU8",
-              "https://www.youtube.com/embed/lbJv4AiDatg",
-              "https://www.youtube.com/embed/7jZdXWGKc7M",
-              "https://www.youtube.com/embed/4lTbWQ8zD3w",
-              "https://www.youtube.com/embed/CHm2gTkNQxc"
-            ],
-            journals: res.data.journals,
-            moods: res.data.moods
-          });
-        })
-        .catch(err => {
-    console.log('-----------------error', err);
 
-          if (err) {
-            this.setState({ error: err.message });
-          }
+    // load all moods and journals
+    API.getUserProfile(user.id)
+      .then(response => {
+        response.data.moods.map(survey => {
+          let formattedDate = (survey.date = moment(survey.date).format(
+            "DD/MM/YYYY"
+          ));
         });
-    });
+        this.setState(
+          {
+            user,
+            moods: response.data.moods,
+            journals: response.data.journals
+          },
+          function() {
+            console.log("moods", this.state.moods);
+          }
+        );
+      })
+      .catch(error => {
+        this.setState({ error: error });
+      });
   }
 
   handleOnChange = event => {
@@ -130,9 +122,8 @@ class Profile extends Component {
   };
 
   handleSubmit = event => {
-    event.preventDefault();
     const { journals } = this.state;
-    const self = this;
+    event.preventDefault();
     const journalEntry = {};
     for (let key in this.state) {
       if (
@@ -148,13 +139,12 @@ class Profile extends Component {
         journalEntry[key] = this.state[key];
       }
     }
-
-    console.log("JOURNAL ENTRY********", journalEntry);
-    const { _id } = JSON.parse(localStorage.getItem("user"));
-    console.log("LocalStorage results: ", _id);
-    API.saveJournal({ _id, journalEntry })
+    const { id } = JSON.parse(localStorage.getItem("user"));
+    API.saveJournal({ id, journalEntry })
       .then(response => {
-        console.log("resonse", response);
+        let entry = response.data;
+        journals.push(entry);
+        this.setState({ journals: journals });
       })
       .catch(error => {
         if (error) {
@@ -166,8 +156,6 @@ class Profile extends Component {
 
   render() {
     const { journals, json, name, videos, moods } = this.state;
-    // console.log("array of journals", journals);
-
     var model = new Survey.Model(json);
     return (
       // <div>
@@ -193,10 +181,10 @@ class Profile extends Component {
           </Col>
 
           <Col size="md-6 sm-12">
-            {!moods.length ? (
+            {!this.state.moods || !this.state.moods.length ? (
               <p>Fill out survey to get score</p>
             ) : (
-              <Graph moods={moods} />
+              <Graph moods={this.state.moods} />
             )}
           </Col>
         </Row>
@@ -206,6 +194,7 @@ class Profile extends Component {
             <Card.Header as="h5">Journal</Card.Header>
             <Card.Body>
               <Card.Title>
+                
                 {this.state.user.name}'s Daily Journal Entry
               </Card.Title>
               {/* <Card.Text> */}
@@ -273,21 +262,27 @@ class Profile extends Component {
           </Card>
         </Container>
         <Accordion>
-          {journals.reverse().map(entry => (
-            <Entry
-              key={entry.id}
-              id={entry.id}
-              one={entry.one}
-              two={entry.two}
-              three={entry.three}
-              four={entry.four}
-              five={entry.five}
-              six={entry.six}
-              seven={entry.seven}
-              eight={entry.eight}
-              date={entry.date}
-            />
-          ))}
+          {!journals || !journals.length ? (
+            <div>No Journals</div>
+          ) : (
+            journals
+              .reverse()
+              .map(entry => (
+                <Entry
+                  key={entry._id}
+                  id={entry._id}
+                  one={entry.one}
+                  two={entry.two}
+                  three={entry.three}
+                  four={entry.four}
+                  five={entry.five}
+                  six={entry.six}
+                  seven={entry.seven}
+                  eight={entry.eight}
+                  date={entry.date}
+                />
+              ))
+          )}
         </Accordion>
 
         {/* </Row> */}

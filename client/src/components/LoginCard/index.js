@@ -22,11 +22,16 @@ export default class LoginCard extends Component {
     event.preventDefault();
     API.loginUser({ email, password })
       .then(response => {
-        let { user } = response.data;
-        console.log("login user response", user);
+        let {
+          _id,
+          name,
+          journals,
+          email,
+          moods,
+          password
+        } = response.data.user;
         // const { _id, name, moods, journals } = response.data;
-        // let user = { id: _id, name };
-        // console.log("login user id", user);
+        let user = { id: _id, name, journals, email, moods, password };
         // // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
         localStorage.clear();
         localStorage.setItem("user", JSON.stringify(user));

@@ -5,8 +5,8 @@ const cookieOptions = {
   httpOnly: true,
   // secure: true, on deployment
   signed: true,
-  maxAge: (1000 * 60) ^ 60,
-  expiresIn: new Date(Date.now() + 90000)
+  maxAge: (1000 * 60) * 60,
+  expiresIn: new Date(Date.now() + 1000 * 60 *60)
 };
 
 const signupUser = async (req, res) => {
@@ -25,22 +25,21 @@ const signupUser = async (req, res) => {
 };
 
 const getUserProfile = function(req, res) {
-  //WHY ARENT WE GETTINNG INTO HERE HELP
-  //
-  //
-  //
   console.log("Inside getUserProfile > getUserProfile");
   db.User.findById(req.params.id)
     .populate("journals")
     .populate("moods")
-    .then(dbUser => res.json(dbUser))
+    .then(dbUser => {
+      res.json(dbUser);
+      console.log("dbUser",dbUser);
+    })
     .catch(err => res.status(422).json(err));
 };
 
 const loginUser = async (req, res) => {
   try {
     let user = await db.User.findOne({ email: req.body.email });
-    console.log('db.user', req.body.email, user);
+    console.log("db.user", req.body.email, user);
     try {
       let isMatch = await user.comparePassword(req.body.password);
       if (isMatch) {
@@ -60,32 +59,23 @@ const loginUser = async (req, res) => {
   }
 };
 
-const cookieCheck = async (req, res) => {
+const cookieCheck = async (req, res, next) => {
   // console.log('Inside cookieCheck', req);
-  console.log('signedCookies', req.signedCookies);
+  console.log("signedCookies", req.signedCookies);
 
   if (Object.keys(req.signedCookies).length === 0) {
     res.status(401).json({ message: "You are not authorized for this action" });
   } else {
     const { token } = req.signedCookies;
     if (token) {
-      try {
-        let {
-          user: { _id, name, email, password }
-        } = await isValidToken(token);
-        try {
-          let user = await db.User.findOne({ name, password, _id, email });
-          res.send({
-            email: user.email,
-            name: user.name,
-            id: user._id
-          });
-        } catch (err) {
-          if (err) throw err;
-        }
-      } catch (err) {
-        if (err) throw err;
-      }
+      next();
+      // try {
+      //   let {
+      //     user: { _id, name, email, password }
+      //   } = await isValidToken(token);
+      // } catch (err) {
+      //   if (err) throw err;
+      // }
     } else {
       res.send({ message: "Cookie has expired, please log in." });
     }

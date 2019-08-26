@@ -6,6 +6,7 @@ import Welcome from "./pages/Welcome";
 import TopBar from "./components/TopBar/index";
 import LoginCard from "./components/LoginCard";
 import SignUp from "./components/SignUp";
+import Axios from "axios";
 // import Axios from "axios";
 
 class App extends Component {
@@ -20,12 +21,19 @@ class App extends Component {
   //   localStorage.clear();
   // }
 
+  logout = e => {
+    e.preventDefault();
+    Axios.get("api/users/logout").then(response => {
+      alert(JSON.stringify(response.data.message));
+    });
+  };
+
   render() {
     return (
       <Router>
         <div>
           {/* {this.state.isLoggedIn? (<TopBar/>) : <TopBarTwo/>} */}
-          <TopBar user={this.state.user} />
+          <TopBar logout={this.logout} user={this.state.user} />
           <Switch>
             <Route exact path="/" component={Welcome} />
             <Route exact path="/profile" component={Profile} />

@@ -12,7 +12,7 @@ export default {
   },
 
   getUserProfile: function(userId) {
-    // console.log("inside getUserProfile function", userId);
+    console.log("inside getUserProfile function", userId);
     return axios.get("/api/users/profile/" + userId);
   },
 
