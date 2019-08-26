@@ -14,7 +14,7 @@ export default class LoginCard extends Component {
 
   handleOnChange = event => {
     this.setState({ [event.target.id]: event.target.value });
-    console.log("event.target.id", [event.target.id]);
+    console.log("event.target.id", event.target.id, event.target.value);
   };
 
   handleSubmit = event => {
@@ -22,7 +22,7 @@ export default class LoginCard extends Component {
     const self = this;
     alert("submit");
     event.preventDefault();
-    API.loginUser({ email, password })
+    API.loginUser({ email: this.state.email, password: this.state.password })
       .then(response => {
         console.log("login user response", response.data);
         const { _id, name, moods, journals } = response.data;
@@ -30,7 +30,7 @@ export default class LoginCard extends Component {
         console.log("login user id", user);
         // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
         // localStorage.clear();
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(response.data));
         self.props.setUser(user);
 
         this.props.history.push("/profile");
@@ -57,7 +57,7 @@ export default class LoginCard extends Component {
           <div className="card-body">
             <h4 className="card-title">Login:</h4>
           </div>
-          <form action="" onSubmit={this.handleSubmit}>
+          <form action="" onSubmit={this.handleSubmit.bind(this)}>
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <div className="form-group">

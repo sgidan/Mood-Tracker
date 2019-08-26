@@ -93,8 +93,9 @@ class Profile extends Component {
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
-    this.setState({ user }, function() {
-      API.getUserProfile(this.state.user.id)
+    console.log('88888', user.user);
+    this.setState({ user: user.user } , function() {
+      API.getUserProfile(this.state.user._id)
         .then(res => {
           let test = res.data.moods.map(survey => {
             console.log("SURVEY*****", survey);
@@ -127,6 +128,7 @@ class Profile extends Component {
         });
     });
   }
+  
   handleOnChange = event => {
     this.setState({ [event.target.id]: event.target.value });
     console.log(this.state);
@@ -171,7 +173,8 @@ class Profile extends Component {
     const { journals, json, name, videos, moods } = this.state;
     console.log("array of journals", journals);
     var model = new Survey.Model(json);
-    return (
+    return ( 
+    // <div>
       <Container fluid>
         <Row>
           <Col size="lg">
@@ -209,13 +212,13 @@ class Profile extends Component {
               <Card.Title>
                 {this.state.user.name}'s Daily Journal Entry
               </Card.Title>
-              <Card.Text>
+              {/* <Card.Text> */}
                 <form
                   className="journalForm"
                   action=""
                   onSubmit={this.handleSubmit}
                 >
-                  <p>I am grateful for...</p>
+                  <label>I am grateful for...</label>
                   <Input
                     id="one"
                     name="q1"
@@ -234,7 +237,7 @@ class Profile extends Component {
                     placeholder="3."
                     onChange={this.handleOnChange.bind(this)}
                   />
-                  <p>What would make today great?</p>
+                  <label>What would make today great?</label>
                   <Input
                     id="four"
                     name="q4"
@@ -253,14 +256,14 @@ class Profile extends Component {
                     placeholder="3."
                     onChange={this.handleOnChange.bind(this)}
                   />
-                  <p>Daily affirmations:</p>
+                  <label>Daily affirmations:</label>
                   <Input
                     id="seven"
                     name="q7"
                     placeholder="I am.."
                     onChange={this.handleOnChange.bind(this)}
                   />
-                  <p>Brain Dump</p>
+                  <label>Brain Dump</label>
                   <TextArea
                     id="eight"
                     name="q8"
@@ -269,7 +272,7 @@ class Profile extends Component {
                   />
                   <FormBtn variant="primary">Submit Journal</FormBtn>
                 </form>
-              </Card.Text>
+              {/* </Card.Text> */}
             </Card.Body>
           </Card>
         </Container>
@@ -293,6 +296,7 @@ class Profile extends Component {
 
         {/* </Row> */}
       </Container>
+      // </div>
     );
   }
 }

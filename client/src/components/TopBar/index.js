@@ -3,11 +3,11 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 
-let item = localStorage.getItem("user");
-let user = null;
-if (item) {
-  user = JSON.parse(item);
-}
+// let item = localStorage.getItem("user");
+// let user = null;
+// if (item) {
+//   user = JSON.parse(item);
+// }
 
 function TopBar(props) {
   return (

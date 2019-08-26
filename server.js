@@ -7,6 +7,9 @@ const routes = require("./routes");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 
+// const cors = require('cors');
+// app.use(cors());
+
 // TODO: Create and require moodRoutes
 // TODO: Create and require journalRoutes
 const app = express();

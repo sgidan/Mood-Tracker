@@ -14,6 +14,7 @@ export default class SignUp extends Component {
   };
 
   handleOnChange = event => {
+    // console.log('****************************', event.target.id, event.target.value)
     this.setState({ [event.target.id]: event.target.value });
   };
 
@@ -26,7 +27,7 @@ export default class SignUp extends Component {
       .then(response => {
         const { id, name } = response.data;
         const user = { id, name };
-        localStorage.setItem("user", JSON.stringify(user));
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         self.props.history.push("/profile");
         this.setState({ name, email, password, user });
       })

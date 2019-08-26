@@ -16,10 +16,10 @@ export default {
     return axios.get("/api/users/profile/" + userId);
   },
 
-  loginUser: function(userId) {
+  loginUser: function(loginInfo) {
     alert("login User");
-    console.log("inside loginUser function", userId);
-    return axios.post("/api/users/login");
+    console.log("inside loginUser function", loginInfo);
+    return axios.post("/api/users/login", loginInfo);
   },
 
   //mood routes: api/moods
