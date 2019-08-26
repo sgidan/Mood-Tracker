@@ -14,24 +14,23 @@ export default class LoginCard extends Component {
 
   handleOnChange = event => {
     this.setState({ [event.target.id]: event.target.value });
-    console.log("event.target.id", event.target.id, event.target.value);
   };
 
   handleSubmit = event => {
     const { email, password } = this.state;
-    const self = this;
     alert("submit");
     event.preventDefault();
-    API.loginUser({ email: this.state.email, password: this.state.password })
+    API.loginUser({ email, password })
       .then(response => {
-        console.log("login user response", response.data);
-        const { _id, name, moods, journals } = response.data;
-        let user = { id: _id, name };
-        console.log("login user id", user);
-        // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
-        // localStorage.clear();
-        localStorage.setItem("user", JSON.stringify(response.data));
-        self.props.setUser(user);
+        let { user } = response.data;
+        console.log("login user response", user);
+        // const { _id, name, moods, journals } = response.data;
+        // let user = { id: _id, name };
+        // console.log("login user id", user);
+        // // localstorage here but with newly generated mongoID to be used when pulling user profile once redirected to /profile
+        localStorage.clear();
+        localStorage.setItem("user", JSON.stringify(user));
+        // self.props.setUser(user);
 
         this.props.history.push("/profile");
       })
@@ -41,8 +40,8 @@ export default class LoginCard extends Component {
           this.setState({ error });
         }
       });
-    console.log("this.props", this.props);
-    console.log("this.props.history", this.props.history);
+    // console.log("this.props", this.props);
+    // console.log("this.props.history", this.props.history);
   };
 
   render() {
@@ -61,7 +60,7 @@ export default class LoginCard extends Component {
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
                 <div className="form-group">
-                  <label for="email">Email: </label>
+                  <label htmlFor="email">Email: </label>
                   <input
                     type="email"
                     required="true"

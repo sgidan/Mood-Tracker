@@ -19,7 +19,7 @@ export default class SignUp extends Component {
   };
 
   handleSubmit = event => {
-    const { name, email, password, signedup } = this.state;
+    const { name, email, password } = this.state;
     const self = this;
     event.preventDefault();
 
@@ -27,7 +27,7 @@ export default class SignUp extends Component {
       .then(response => {
         const { id, name } = response.data;
         const user = { id, name };
-        localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("user", JSON.stringify(user));
         self.props.history.push("/profile");
         this.setState({ name, email, password, user });
       })

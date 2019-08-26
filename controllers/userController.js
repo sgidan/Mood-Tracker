@@ -36,7 +36,7 @@ const getUserProfile = function(req, res) {
 const loginUser = async (req, res) => {
   try {
     let user = await db.User.findOne({ email: req.body.email });
-    console.log('db.user',req.body.email, user);
+    console.log('db.user', req.body.email, user);
     try {
       let isMatch = await user.comparePassword(req.body.password);
       if (isMatch) {
@@ -57,6 +57,9 @@ const loginUser = async (req, res) => {
 };
 
 const cookieCheck = async (req, res) => {
+  // console.log('Inside cookieCheck', req);
+  console.log('signedCookies', req.signedCookies);
+
   if (Object.keys(req.signedCookies).length === 0) {
     res.status(401).json({ message: "You are not authorized for this action" });
   } else {

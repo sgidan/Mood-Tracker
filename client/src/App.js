@@ -6,7 +6,7 @@ import Welcome from "./pages/Welcome";
 import TopBar from "./components/TopBar/index";
 import LoginCard from "./components/LoginCard";
 import SignUp from "./components/SignUp";
-import Axios from "axios";
+// import Axios from "axios";
 
 class App extends Component {
   state = {
@@ -29,11 +29,19 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={Welcome} />
             <Route exact path="/profile" component={Profile} />
-            <Route exact path="/login" render={(routeProps) => <LoginCard {...routeProps} setUser={this.setUser} />} />
+            <Route
+              exact
+              path="/login"
+              render={routeProps => (
+                <LoginCard {...routeProps} setUser={this.setUser} />
+              )}
+            />
             <Route
               exact
               path="/signup"
-              render={(routeProps) => <SignUp {...routeProps} setUser={this.setUser} />}
+              render={routeProps => (
+                <SignUp {...routeProps} setUser={this.setUser} />
+              )}
             />
           </Switch>
         </div>

@@ -83,43 +83,34 @@ class Profile extends Component {
     });
   };
 
-  handleInputChange = event => {
-    const { label, value } = event.target;
-    console.log("event.target", event.target.value);
-    // this.setState({
-    // [name]: value
-    // });
-  };
-
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
-    console.log('88888', user.user);
-    this.setState({ user: user.user } , function() {
+    this.setState({ user }, function() {
       API.getUserProfile(this.state.user._id)
         .then(res => {
           let test = res.data.moods.map(survey => {
             console.log("SURVEY*****", survey);
             survey.date = moment(survey.date).format("DD/MM/YYYY");
           });
-          // console.log("TESTING TETING************", test);
-          // this.setState({
-          //   //  name: res.data.name,
-          //   videos: [
-          //     "https://www.youtube.com/embed/7lECIsRif10",
-          //     "https://www.youtube.com/embed/dLme6kE5XaU",
-          //     "https://www.youtube.com/embed/UhWFddWz1Nk",
-          //     "https://www.youtube.com/embed/pvgfucVF5cU",
-          //     "https://www.youtube.com/embed/pJhUs1L_RQo",
-          //     "https://www.youtube.com/embed/xFQLPURE8Ok",
-          //     "https://www.youtube.com/embed/8Su5VtKeXU8",
-          //     "https://www.youtube.com/embed/lbJv4AiDatg",
-          //     "https://www.youtube.com/embed/7jZdXWGKc7M",
-          //     "https://www.youtube.com/embed/4lTbWQ8zD3w",
-          //     "https://www.youtube.com/embed/CHm2gTkNQxc"
-          //   ],
-          //   journals: res.data.journals,
-          //   moods: res.data.moods
-          // });
+          console.log("TESTING TETING************", test);
+          this.setState({
+            //  name: res.data.name,
+            videos: [
+              "https://www.youtube.com/embed/7lECIsRif10",
+              "https://www.youtube.com/embed/dLme6kE5XaU",
+              "https://www.youtube.com/embed/UhWFddWz1Nk",
+              "https://www.youtube.com/embed/pvgfucVF5cU",
+              "https://www.youtube.com/embed/pJhUs1L_RQo",
+              "https://www.youtube.com/embed/xFQLPURE8Ok",
+              "https://www.youtube.com/embed/8Su5VtKeXU8",
+              "https://www.youtube.com/embed/lbJv4AiDatg",
+              "https://www.youtube.com/embed/7jZdXWGKc7M",
+              "https://www.youtube.com/embed/4lTbWQ8zD3w",
+              "https://www.youtube.com/embed/CHm2gTkNQxc"
+            ],
+            journals: res.data.journals,
+            moods: res.data.moods
+          });
         })
         .catch(err => {
           if (err) {
@@ -128,11 +119,9 @@ class Profile extends Component {
         });
     });
   }
-  
+
   handleOnChange = event => {
     this.setState({ [event.target.id]: event.target.value });
-    console.log(this.state);
-    console.log("event.target.id", [event.target.id]);
   };
 
   handleSubmit = event => {
@@ -154,6 +143,7 @@ class Profile extends Component {
         journalEntry[key] = this.state[key];
       }
     }
+    debugger;
     console.log("JOURNAL ENTRY********", journalEntry);
     const { id } = JSON.parse(localStorage.getItem("user"));
     console.log("LocalStorage results: ", id);
@@ -171,10 +161,11 @@ class Profile extends Component {
 
   render() {
     const { journals, json, name, videos, moods } = this.state;
-    console.log("array of journals", journals);
+    // console.log("array of journals", journals);
+
     var model = new Survey.Model(json);
-    return ( 
-    // <div>
+    return (
+      // <div>
       <Container fluid>
         <Row>
           <Col size="lg">
@@ -213,65 +204,65 @@ class Profile extends Component {
                 {this.state.user.name}'s Daily Journal Entry
               </Card.Title>
               {/* <Card.Text> */}
-                <form
-                  className="journalForm"
-                  action=""
-                  onSubmit={this.handleSubmit}
-                >
-                  <label>I am grateful for...</label>
-                  <Input
-                    id="one"
-                    name="q1"
-                    placeholder="1."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="two"
-                    name="q2"
-                    placeholder="2."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="three"
-                    name="q3"
-                    placeholder="3."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <label>What would make today great?</label>
-                  <Input
-                    id="four"
-                    name="q4"
-                    placeholder="1."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="five"
-                    name="q5"
-                    placeholder="2."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="six"
-                    name="q6"
-                    placeholder="3."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <label>Daily affirmations:</label>
-                  <Input
-                    id="seven"
-                    name="q7"
-                    placeholder="I am.."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <label>Brain Dump</label>
-                  <TextArea
-                    id="eight"
-                    name="q8"
-                    placeholder="Other notes, ramblings you need to release (Optional)"
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <FormBtn variant="primary">Submit Journal</FormBtn>
-                </form>
+              <form
+                className="journalForm"
+                action=""
+                onSubmit={this.handleSubmit}
+              >
+                <label>I am grateful for...</label>
+                <Input
+                  id="one"
+                  name="q1"
+                  placeholder="1."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="two"
+                  name="q2"
+                  placeholder="2."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="three"
+                  name="q3"
+                  placeholder="3."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <label>What would make today great?</label>
+                <Input
+                  id="four"
+                  name="q4"
+                  placeholder="1."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="five"
+                  name="q5"
+                  placeholder="2."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="six"
+                  name="q6"
+                  placeholder="3."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <label>Daily affirmations:</label>
+                <Input
+                  id="seven"
+                  name="q7"
+                  placeholder="I am.."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <label>Brain Dump</label>
+                <TextArea
+                  id="eight"
+                  name="q8"
+                  placeholder="Other notes, ramblings you need to release (Optional)"
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <FormBtn variant="primary">Submit Journal</FormBtn>
+              </form>
               {/* </Card.Text> */}
             </Card.Body>
           </Card>

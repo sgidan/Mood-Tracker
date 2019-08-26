@@ -7,29 +7,28 @@ import axios from "axios";
 export default {
   //user routes: api/users/ ----
   signupUser: function(newUser) {
-    console.log("Inside API signupUser:", newUser);
+    // console.log("Inside API signupUser:", newUser);
     return axios.post("/api/users/signup", newUser);
   },
 
   getUserProfile: function(userId) {
-    console.log("inside getUserProfile function", userId);
+    // console.log("inside getUserProfile function", userId);
     return axios.get("/api/users/profile/" + userId);
   },
 
   loginUser: function(loginInfo) {
-    alert("login User");
-    console.log("inside loginUser function", loginInfo);
+    // console.log("inside loginUser function", loginInfo);
     return axios.post("/api/users/login", loginInfo);
   },
 
   //mood routes: api/moods
   submitSurvey: function(moodAns) {
-    console.log("inside submitSurvey function", moodAns);
+    // console.log("inside submitSurvey function", moodAns);
     return axios.post("/api/moods/survey", moodAns);
   },
   //journal routes: api/journals
   saveJournal: function(journalEntry) {
-    console.log("inside loadJournals function", journalEntry);
+    // console.log("inside loadJournals function", journalEntry);
     return axios.post("/api/journal/save", journalEntry);
   }
 };
