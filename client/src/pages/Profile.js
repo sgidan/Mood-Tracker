@@ -83,7 +83,7 @@ class Profile extends Component {
       // this.props.history.push("/profile");
       let { _id } = response.data;
       let surveyAns = response.data;
-      surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
+      surveyAns.date = moment(surveyAns.date).format("MM/DD/YY");
       self.state.moods.push(surveyAns);
       self.setState({
         moods: self.state.moods
@@ -99,7 +99,7 @@ class Profile extends Component {
       .then(response => {
         response.data.moods.map(survey => {
           let formattedDate = (survey.date = moment(survey.date).format(
-            "DD/MM/YYYY"
+            "MM/DD/YY"
           ));
         });
         this.setState(
@@ -271,7 +271,7 @@ class Profile extends Component {
           ) : (
             journals
               .reverse()
-              .map(entry => (
+              .map((entry, i) => (
                 <Entry
                   key={entry._id}
                   id={entry._id}
@@ -284,6 +284,7 @@ class Profile extends Component {
                   seven={entry.seven}
                   eight={entry.eight}
                   date={entry.date}
+                  eventKey={i}
                 />
               ))
           )}

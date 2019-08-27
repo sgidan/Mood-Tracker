@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Redirect } from 'react-router-dom';
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Profile from "./pages/Profile";
@@ -12,21 +13,26 @@ import Axios from "axios";
 
 class App extends Component {
   state = {
-    user: null
+    user: null,
+    redirect: false
   };
 
   setUser = user => {
     this.setState({ user: user });
   };
-  // componentDidMount() {
-  //   localStorage.clear();
-  // }
+  
+
+  renderRedirect = () => {
+    if (this.state.redirect) {
+      return <Redirect to='/' />
+    }
+  }
 
   logout = e => {
     e.preventDefault();
     Axios.get("api/users/logout").then(response => {
-      alert(JSON.stringify(response.data.message));
-      // this.props.history.push("/profile");
+      // alert(JSON.stringify(response.data.message));
+      this.setState({ redirect: true})
     });
   };
 
@@ -35,7 +41,9 @@ class App extends Component {
       <Router>
         <div>
           {/* {this.state.isLoggedIn? (<TopBar/>) : <TopBarTwo/>} */}
-          <TopBar logout={this.logout} user={this.state.user} />
+          <div>{this.renderRedirect()}
+            <TopBar logout={this.logout} user={this.state.user} />
+          </div>
           <Switch>
             <Route exact path="/" component={Welcome} />
             <Route exact path="/profile" component={Profile} />

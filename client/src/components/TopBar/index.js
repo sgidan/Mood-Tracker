@@ -11,12 +11,6 @@ import Navbar from "react-bootstrap/Navbar";
 
 function TopBar(props) {
   return (
-    // <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
-    //   <a className="navbar-brand" href="/">
-    //     Login/SignUp
-    //   </a>
-
-    // </nav>
     <div>
       <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Mood Tracker</Navbar.Brand>
@@ -29,8 +23,9 @@ function TopBar(props) {
             <Nav.Link id="nav-option" href="/login">
               Login
             </Nav.Link>
-            <Nav.Link id="nav-option" href="/login" onClick={props.logout}>
-                Logout
+            <Nav.Link id="nav-option" onClick={props.logout}>
+              Logout
+
             </Nav.Link>
             <Nav.Link id="nav-option" href="#pricing">
               {props.user ? props.user.name + "'s Mood Tracker" : " "}
