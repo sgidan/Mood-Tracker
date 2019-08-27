@@ -12,16 +12,30 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
 import moment from "moment";
-// import axios from "axios";
+
+const videos = [
+  "https://www.youtube.com/embed/7lECIsRif10",
+  "https://www.youtube.com/embed/dLme6kE5XaU",
+  "https://www.youtube.com/embed/UhWFddWz1Nk",
+  "https://www.youtube.com/embed/pvgfucVF5cU",
+  "https://www.youtube.com/embed/pJhUs1L_RQo",
+  "https://www.youtube.com/embed/xFQLPURE8Ok",
+  "https://www.youtube.com/embed/8Su5VtKeXU8",
+  "https://www.youtube.com/embed/lbJv4AiDatg",
+  "https://www.youtube.com/embed/7jZdXWGKc7M",
+  "https://www.youtube.com/embed/4lTbWQ8zD3w",
+  "https://www.youtube.com/embed/CHm2gTkNQxc"
+];
 
 class Profile extends Component {
   state = {
     name: "",
     error: "",
-    userId: "",
+    user: "",
+    entry: {},
     journals: [],
     moods: [],
-    videos: [],
+    videos: videos,
     json: {
       questions: [
         {
@@ -63,88 +77,53 @@ class Profile extends Component {
     //is this supposed to be this.state.json??? or survey.data from above?
     const { data } = survey;
     const { id } = user;
+
     API.submitSurvey({ data, id }).then(response => {
       // this.props.history.push("/profile");
-
       let { _id } = response.data;
       let surveyAns = response.data;
-      console.log(surveyAns);
       surveyAns.date = moment(surveyAns.date).format("DD/MM/YYYY");
-      console.log(surveyAns);
       self.state.moods.push(surveyAns);
-      self.setState(
-        {
-          userId: _id,
-          moods: self.state.moods
-        },
-        function() {
-          console.log("moods", self.state.moods);
-        }
-      );
+      self.setState({
+        moods: self.state.moods
+      });
     });
-  };
-
-  handleInputChange = event => {
-    const { label, value } = event.target;
-    console.log("event.target", event.target.value);
-    // this.setState({
-    // [name]: value
-    // });
   };
 
   componentDidMount() {
     let user = JSON.parse(localStorage.getItem("user"));
-    console.log("user is here", user);
-    this.setState({ userId: user.id, name: user.name }, function() {
-      console.log("USERID", this.state.userId);
 
-      // axios.get("/api/users/profile/:id")
-      // TODO: Will need to update 'name' to specific id or something more secure/poignant
-      API.getUserProfile(user.id)
-        .then(res => {
-          console.log("get user profile response", res);
-          let test = res.data.moods.map(survey => {
-            console.log("SURVEY*****", survey);
-            survey.date = moment(survey.date).format("DD/MM/YYYY");
-          });
-          console.log("TESTING TETING************", test);
-          this.setState({
-            //  name: res.data.name,
-            videos: [
-              "https://www.youtube.com/embed/7lECIsRif10",
-              "https://www.youtube.com/embed/dLme6kE5XaU",
-              "https://www.youtube.com/embed/UhWFddWz1Nk",
-              "https://www.youtube.com/embed/pvgfucVF5cU",
-              "https://www.youtube.com/embed/pJhUs1L_RQo",
-              "https://www.youtube.com/embed/xFQLPURE8Ok",
-              "https://www.youtube.com/embed/8Su5VtKeXU8",
-              "https://www.youtube.com/embed/lbJv4AiDatg",
-              "https://www.youtube.com/embed/7jZdXWGKc7M",
-              "https://www.youtube.com/embed/4lTbWQ8zD3w",
-              "https://www.youtube.com/embed/CHm2gTkNQxc",
-            ],
-            journals: res.data.journals,
-            moods: res.data.moods
-          });
-          console.log("STATE", this.state);
-        })
-        .catch(err => {
-          if (err) {
-            this.setState({ error: err.message });
-          }
+    // load all moods and journals
+    API.getUserProfile(user.id)
+      .then(response => {
+        response.data.moods.map(survey => {
+          let formattedDate = (survey.date = moment(survey.date).format(
+            "DD/MM/YYYY"
+          ));
         });
-    });
+        this.setState(
+          {
+            user,
+            moods: response.data.moods,
+            journals: response.data.journals
+          },
+          function() {
+            console.log("moods", this.state.moods);
+          }
+        );
+      })
+      .catch(error => {
+        this.setState({ error: error });
+      });
   }
+
   handleOnChange = event => {
     this.setState({ [event.target.id]: event.target.value });
-    console.log(this.state);
-    console.log("event.target.id", [event.target.id]);
   };
 
   handleSubmit = event => {
-    // event.preventDefault();
     const { journals } = this.state;
-    const self = this;
+    event.preventDefault();
     const journalEntry = {};
     for (let key in this.state) {
       if (
@@ -160,12 +139,12 @@ class Profile extends Component {
         journalEntry[key] = this.state[key];
       }
     }
-    console.log("JOURNAL ENTRY********", journalEntry);
     const { id } = JSON.parse(localStorage.getItem("user"));
-    console.log("LocalStorage results: ", id);
     API.saveJournal({ id, journalEntry })
       .then(response => {
-        console.log("resonse", response);
+        let entry = response.data;
+        journals.push(entry);
+        this.setState({ journals: journals });
       })
       .catch(error => {
         if (error) {
@@ -177,9 +156,9 @@ class Profile extends Component {
 
   render() {
     const { journals, json, name, videos, moods } = this.state;
-    console.log("array of journals", journals);
     var model = new Survey.Model(json);
     return (
+      // <div>
       <Container fluid>
         <Row>
           <Col size="lg">
@@ -196,16 +175,16 @@ class Profile extends Component {
                 height="315"
                 src={videos[Math.floor(Math.random() * videos.length)]}
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
+                allowFullScreen
               />
             </Jumbotron>
           </Col>
 
           <Col size="md-6 sm-12">
-            {!moods.length ? (
+            {!this.state.moods || !this.state.moods.length ? (
               <p>Fill out survey to get score</p>
             ) : (
-              <Graph moods={moods} />
+              <Graph moods={this.state.moods} />
             )}
           </Col>
         </Row>
@@ -214,91 +193,101 @@ class Profile extends Component {
           <Card className="kevin">
             <Card.Header as="h5">Journal</Card.Header>
             <Card.Body>
-              <Card.Title>{name}'s Daily Journal Entry</Card.Title>
-              <Card.Text>
-                <form
-                  className="journalForm"
-                  action=""
-                  onSubmit={this.handleSubmit}
-                >
-                  <p>I am grateful for...</p>
-                  <Input
-                    id="one"
-                    name="q1"
-                    placeholder="1."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="two"
-                    name="q2"
-                    placeholder="2."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="three"
-                    name="q3"
-                    placeholder="3."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <p>What would make today great?</p>
-                  <Input
-                    id="four"
-                    name="q4"
-                    placeholder="1."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="five"
-                    name="q5"
-                    placeholder="2."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <Input
-                    id="six"
-                    name="q6"
-                    placeholder="3."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <p>Daily affirmations:</p>
-                  <Input
-                    id="seven"
-                    name="q7"
-                    placeholder="I am.."
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <p>Brain Dump</p>
-                  <TextArea
-                    id="eight"
-                    name="q8"
-                    placeholder="Other notes, ramblings you need to release (Optional)"
-                    onChange={this.handleOnChange.bind(this)}
-                  />
-                  <FormBtn variant="primary">Submit Journal</FormBtn>
-                </form>
-              </Card.Text>
+              <Card.Title>
+                
+                {this.state.user.name}'s Daily Journal Entry
+              </Card.Title>
+              {/* <Card.Text> */}
+              <form
+                className="journalForm"
+                action=""
+                onSubmit={this.handleSubmit}
+              >
+                <label>I am grateful for...</label>
+                <Input
+                  id="one"
+                  name="q1"
+                  placeholder="1."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="two"
+                  name="q2"
+                  placeholder="2."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="three"
+                  name="q3"
+                  placeholder="3."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <label>What would make today great?</label>
+                <Input
+                  id="four"
+                  name="q4"
+                  placeholder="1."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="five"
+                  name="q5"
+                  placeholder="2."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <Input
+                  id="six"
+                  name="q6"
+                  placeholder="3."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <label>Daily affirmations:</label>
+                <Input
+                  id="seven"
+                  name="q7"
+                  placeholder="I am.."
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <label>Brain Dump</label>
+                <TextArea
+                  id="eight"
+                  name="q8"
+                  placeholder="Other notes, ramblings you need to release (Optional)"
+                  onChange={this.handleOnChange.bind(this)}
+                />
+                <FormBtn variant="primary">Submit Journal</FormBtn>
+              </form>
+              {/* </Card.Text> */}
             </Card.Body>
           </Card>
         </Container>
         <Accordion>
-          {journals.reverse().map(entry => (
-            <Entry
-              key={entry.id}
-              id={entry.id}
-              one={entry.one}
-              two={entry.two}
-              three={entry.three}
-              four={entry.four}
-              five={entry.five}
-              six={entry.six}
-              seven={entry.seven}
-              eight={entry.eight}
-              date={entry.date}
-            />
-          ))}
+          {!journals || !journals.length ? (
+            <div>No Journals</div>
+          ) : (
+            journals
+              .reverse()
+              .map(entry => (
+                <Entry
+                  key={entry._id}
+                  id={entry._id}
+                  one={entry.one}
+                  two={entry.two}
+                  three={entry.three}
+                  four={entry.four}
+                  five={entry.five}
+                  six={entry.six}
+                  seven={entry.seven}
+                  eight={entry.eight}
+                  date={entry.date}
+                />
+              ))
+          )}
         </Accordion>
 
         {/* </Row> */}
       </Container>
+      // </div>
     );
   }
 }
