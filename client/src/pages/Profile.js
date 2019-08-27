@@ -12,6 +12,7 @@ import { Input, TextArea, FormBtn } from "../components/Form";
 import { Card, Accordion } from "react-bootstrap";
 import Graph from "../components/Graph";
 import moment from "moment";
+import "./style.css";
 
 const videos = [
   "https://www.youtube.com/embed/7lECIsRif10",
@@ -159,11 +160,13 @@ class Profile extends Component {
     var model = new Survey.Model(json);
     return (
       // <div>
-      <Container fluid>
+      <Container id="large-containter" fluid>
         <Row>
           <Col size="lg">
+            <div id="mood-survey" class="survey-class">
             <h1>Mood Quiz</h1>
-            <Survey.Survey model={model} onComplete={this.onComplete} />
+            <Survey.Survey  model={model} onComplete={this.onComplete} />
+            </div>
           </Col>
         </Row>
         <Row>
@@ -262,8 +265,9 @@ class Profile extends Component {
           </Card>
         </Container>
         <Accordion>
+          <h4>Previous Journal Entries</h4>
           {!journals || !journals.length ? (
-            <div>No Journals</div>
+            <div>No Previous Journals</div>
           ) : (
             journals
               .reverse()

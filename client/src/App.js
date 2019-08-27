@@ -7,6 +7,7 @@ import TopBar from "./components/TopBar/index";
 import LoginCard from "./components/LoginCard";
 import SignUp from "./components/SignUp";
 import Axios from "axios";
+
 // import Axios from "axios";
 
 class App extends Component {
@@ -25,6 +26,7 @@ class App extends Component {
     e.preventDefault();
     Axios.get("api/users/logout").then(response => {
       alert(JSON.stringify(response.data.message));
+      // this.props.history.push("/profile");
     });
   };
 
@@ -52,6 +54,16 @@ class App extends Component {
               )}
             />
           </Switch>
+          <footer class="app-footer">
+            <div>
+              <a href="https://github.com/sgidan/Mood-Tracker">GitHub  |  </a>
+              <a href="https://github.com/sgidan/Mood-Tracker">Heroku</a>
+             
+              <span>    &copy;    2019     SxS  </span>
+              <span>Powered by</span>
+              <a href="https://coreui.io"> ...it's fine.</a>
+              </div>
+          </footer>
         </div>
       </Router>
     );
