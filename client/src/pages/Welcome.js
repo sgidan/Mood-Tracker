@@ -12,6 +12,7 @@ class Welcome extends Component {
     render() {
       return (
         <Container fluid>
+          {/* <h1>HERE IS INFO</h1> */}
            <ul className="slideshow">
           <li />
           <li />

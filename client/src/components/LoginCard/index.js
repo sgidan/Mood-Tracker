@@ -18,7 +18,6 @@ export default class LoginCard extends Component {
 
   handleSubmit = event => {
     const { email, password } = this.state;
-    alert("submit");
     event.preventDefault();
     API.loginUser({ email, password })
       .then(response => {
