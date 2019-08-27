@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const { checkPassword, hashPassword } = require("../utilities/PasswordService");
+const { checkPassword, hashPassword } = require("../utilities/passwordService");
 
 require("mongoose-type-email");
 ///do we want this to be required??***********
