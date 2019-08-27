@@ -25,6 +25,7 @@ class App extends Component {
     e.preventDefault();
     Axios.get("api/users/logout").then(response => {
       alert(JSON.stringify(response.data.message));
+       // this.props.history.push("/profile");
     });
   };
 
