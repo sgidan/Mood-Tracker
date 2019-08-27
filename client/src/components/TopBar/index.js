@@ -25,6 +25,7 @@ function TopBar(props) {
             </Nav.Link>
             <Nav.Link id="nav-option" onClick={props.logout}>
               Logout
+
             </Nav.Link>
             <Nav.Link id="nav-option" href="#pricing">
               {props.user ? props.user.name + "'s Mood Tracker" : " "}

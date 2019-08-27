@@ -22,3 +22,12 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.app-footer{
+  background: #20c997;
+  margin-top: 50px;
+  padding: 10px;
+  text-align: center;
+
+}
+

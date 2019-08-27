@@ -33,7 +33,6 @@ class App extends Component {
     Axios.get("api/users/logout").then(response => {
       // alert(JSON.stringify(response.data.message));
       this.setState({ redirect: true})
-      
     });
   };
 
@@ -63,6 +62,16 @@ class App extends Component {
               )}
             />
           </Switch>
+          <footer class="app-footer">
+            <div>
+              <a href="https://github.com/sgidan/Mood-Tracker">GitHub  |  </a>
+              <a href="https://github.com/sgidan/Mood-Tracker">Heroku</a>
+             
+              <span>    &copy;    2019     SxS  </span>
+              <span>Powered by</span>
+              <a href="https://coreui.io"> ...it's fine.</a>
+              </div>
+          </footer>
         </div>
       </Router>
     );

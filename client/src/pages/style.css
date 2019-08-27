@@ -1,7 +1,25 @@
-/* 
+
 #large-container {
     padding-left: 45px;
     padding-right: 45px;
     padding-top: 20px;
+    padding-bottom: 30px;
   
-  } */
+  }
+
+#mood-survey{
+    background-image: linear-gradient(-90deg, #2EB5E0, #C4DBE0);
+}
+
+.survey-class{
+  /* color: white; */
+  padding: 20px;
+  margin-bottom: 15px;
+}
+
+.journalForm{
+  /* background: purple; */
+  padding: 10px;
+  margin: 10px;
+  align-self: center;
+}

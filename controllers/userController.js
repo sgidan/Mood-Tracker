@@ -85,7 +85,9 @@ const cookieCheck = async (req, res, next) => {
 const logoutUser = function(req, res) {
   res
     .clearCookie("token")
-    .json({ message: "You have successfully logged out" });
+    .json({ message: "You have successfully logged out" })
+    // .render('/login')
+
 };
 
 module.exports = {
