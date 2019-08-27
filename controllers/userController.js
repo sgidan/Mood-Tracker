@@ -1,6 +1,6 @@
 // require models (which typically we refer to as db)
 const db = require("../models");
-const { createToken, isValidToken } = require("../utilities/tokenService");
+const { createToken, isValidToken } = require("../utilities/TokenService");
 const cookieOptions = {
   httpOnly: true,
   // secure: true, on deployment
