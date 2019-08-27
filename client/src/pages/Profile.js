@@ -267,7 +267,7 @@ class Profile extends Component {
           ) : (
             journals
               .reverse()
-              .map(entry => (
+              .map((entry, i) => (
                 <Entry
                   key={entry._id}
                   id={entry._id}
@@ -280,6 +280,7 @@ class Profile extends Component {
                   seven={entry.seven}
                   eight={entry.eight}
                   date={entry.date}
+                  eventKey={i}
                 />
               ))
           )}

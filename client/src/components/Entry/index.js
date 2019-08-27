@@ -8,10 +8,10 @@ export default function index(props) {
   return (
     <div>
       <Card>
-        <Accordion.Toggle as={Card.Header} eventKey="0">
+        <Accordion.Toggle as={Card.Header} eventKey={props.eventKey}>
           {date}
         </Accordion.Toggle>
-        <Accordion.Collapse eventKey="0">
+        <Accordion.Collapse eventKey={props.eventKey}>
           <Card.Body>
             <div>
               I am grateful for: {props.one} {props.two} {props.three}
