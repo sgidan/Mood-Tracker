@@ -159,7 +159,7 @@ class Profile extends Component {
     const { journals, json, name, videos, moods } = this.state;
     var model = new Survey.Model(json);
     return (
-      // <div>
+      <body>
       <Container id="large-containter" fluid>
         <Row>
           <Col size="lg">
@@ -213,6 +213,7 @@ class Profile extends Component {
                   placeholder="1."
                   onChange={this.handleOnChange.bind(this)}
                 />
+                
                 <Input
                   id="two"
                   name="q2"
@@ -225,6 +226,7 @@ class Profile extends Component {
                   placeholder="3."
                   onChange={this.handleOnChange.bind(this)}
                 />
+                <br />
                 <label>What would make today great?</label>
                 <Input
                   id="four"
@@ -244,6 +246,7 @@ class Profile extends Component {
                   placeholder="3."
                   onChange={this.handleOnChange.bind(this)}
                 />
+                <br />
                 <label>Daily affirmations:</label>
                 <Input
                   id="seven"
@@ -251,21 +254,23 @@ class Profile extends Component {
                   placeholder="I am.."
                   onChange={this.handleOnChange.bind(this)}
                 />
+                <br />
                 <label>Brain Dump</label>
                 <TextArea
                   id="eight"
                   name="q8"
-                  placeholder="Other notes, ramblings you need to release (Optional)"
+                  placeholder="Other notes, ramblings, things you need to release: (optional) "
                   onChange={this.handleOnChange.bind(this)}
                 />
-                <FormBtn variant="primary">Submit Journal</FormBtn>
+                <br />
+                <FormBtn variant="primary" id="journal-sub">Submit Journal</FormBtn>
               </form>
               {/* </Card.Text> */}
             </Card.Body>
           </Card>
         </Container>
         <Accordion>
-          <h4>Previous Journal Entries</h4>
+          <h4 id="journal-title">Previous Journal Entries</h4>
           {!journals || !journals.length ? (
             <div>No Previous Journals</div>
           ) : (
@@ -289,10 +294,20 @@ class Profile extends Component {
               ))
           )}
         </Accordion>
-
+        
         {/* </Row> */}
       </Container>
-      // </div>
+      <footer class="app-footer">
+      <div>
+        <a href="https://github.com/sgidan/Mood-Tracker">GitHub  |  </a>
+        <a href="https://github.com/sgidan/Mood-Tracker">Heroku</a>
+       
+        <span>    &copy;    2019     SxS  </span>
+        <span>Powered by</span>
+        <a href="https://coreui.io"> ...it's fine.</a>
+        </div>
+    </footer>
+      </body>
     );
   }
 }

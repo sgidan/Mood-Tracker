@@ -24,10 +24,12 @@
 }
 
 .app-footer{
-  background: #20c997;
+  /* background: #1ab394; */
+  background: #393f46;
   margin-top: 50px;
   padding: 10px;
   text-align: center;
+  color: rgba(254, 254, 254, 0.803);
 
 }
 
