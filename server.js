@@ -6,7 +6,7 @@ const { config } = require("dotenv");
 const routes = require("./routes");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mood_db";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://ssmood:ssmood123@ds251877.mlab.com:51877/heroku_2c2w234lmongodb://localhost/mood_db";
 
 // const cors = require('cors');
 // app.use(cors());
