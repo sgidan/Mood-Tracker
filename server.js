@@ -38,7 +38,7 @@ app.get("*", function(req, res) {
 
 // Connect to the Mongo DB
 mongoose.connect(
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mood_db",
+  process.env.MONGODB_URI || 'mongodb://heroku_jwgj39vq:j9er5eb523d56cq27qkfu25fnt@ds351987.mlab.com:51987/heroku_jwgj39vq',
   {
     useNewUrlParser: true
   }
