@@ -19,7 +19,7 @@ config({ debug: process.env.DEBUG });
 // MIDDLEWARE
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(cookieParser(process.env.SECRET));
+app.use(cookieParser("really really secret"));
 
 // Serve up static assets (usually on heroku)
 if (process.env.NODE_ENV === "production") {
