@@ -1,13 +1,13 @@
-require('dotenv').config();
-const jwt = require('jsonwebtoken');
-const { SECRET } = process.env;
+require("dotenv").config();
+const jwt = require("jsonwebtoken");
+
 
 module.exports = {
   createToken: async user => {
     try {
       let token = await jwt.sign(
         { user, exp: Math.floor(Date.now() / 1000) + 60 * 60 },
-        SECRET
+        "really really secret"
       );
       return token;
     } catch (err) {
