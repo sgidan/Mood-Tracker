@@ -6,7 +6,6 @@ const { config } = require("dotenv");
 const routes = require("./routes");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://ssmood:ssmood123@ds251877.mlab.com:51877/heroku_2c2w234lmongodb://localhost/mood_db";
 
 // const cors = require('cors');
 // app.use(cors());
@@ -38,9 +37,12 @@ app.get("*", function(req, res) {
 });
 
 // Connect to the Mongo DB
-mongoose.connect(MONGODB_URI, {
-  useNewUrlParser: true
-});
+mongoose.connect(
+  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/mood_db",
+  {
+    useNewUrlParser: true
+  }
+);
 
 app.listen(PORT, function() {
   console.log(`🌎 ==> API server now on port ${PORT}!`);
