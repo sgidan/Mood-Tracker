@@ -4,6 +4,8 @@ const { checkPassword, hashPassword } = require("../utilities/passwordService");
 
 require("mongoose-type-email");
 
+
+
 ///do we want this to be required??***********
 
 const userSchema = new Schema({
