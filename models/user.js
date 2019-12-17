@@ -6,8 +6,6 @@ require("mongoose-type-email");
 
 
 
-///do we want this to be required??***********
-
 const userSchema = new Schema({
   name: String,
   email: String,
